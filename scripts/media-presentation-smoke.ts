@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import {mkdirSync,writeFileSync,readdirSync,existsSync} from 'node:fs';
+import {join,basename} from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {createAgentSession,Settings,SessionManager,AgentRegistry,type AgentSession,type ExtensionUIContext,type ExtensionError} from '@oh-my-pi/pi-coding-agent';
+import {getSessionsDir} from '@oh-my-pi/pi-utils';
+import {Store} from '../src/state';
+import {digest} from '../src/contracts';
+import {captureMediaCatchupHistory,runMediaCatchup} from '../src/media-catchup';
+import {sealEvidence} from '../src/evidence';
+import {openProvider} from '../src/provider';
+import plugin from '../src/extension';
+import {root,profileRoot,protectedHashes} from './dev-preflight';
+const id='media-presentation-'+randomUUID(),project=join(root,'.lab/workspaces',id),agentDir=join(profileRoot('omp-system-dev'),'agent');mkdirSync(project,{recursive:true});
+const store=new Store(join(agentDir,'omp-system',digest(project))),provider=await openProvider(agentDir),before=protectedHashes();let created:Awaited<ReturnType<typeof createAgentSession>>|undefined;
+try{
+ const paths=await import(import.meta.resolve('@oh-my-pi/pi-coding-agent/session/session-paths')),historySession=SessionManager.create(project,paths.sessionDirForCwd(project,getSessionsDir(agentDir)));
+ await historySession.appendMessage({role:'user',content:'No changes requested; nothing awaits approval.',timestamp:Date.now()});await historySession.appendMessage({role:'assistant',content:[{type:'text',text:'Nothing changed.'}],api:'openai-completions',provider:'9router',model:'code-sol',usage:{input:0,output:0,cacheRead:0,cacheWrite:0,totalTokens:0,cost:{input:0,output:0,cacheRead:0,cacheWrite:0,total:0}},stopReason:'stop',timestamp:Date.now()});await historySession.appendMessage({role:'user',content:'/ketchup-video',timestamp:Date.now()});await historySession.flush();
+ const history=await captureMediaCatchupHistory({action:'session-history',id,project,mode:'read',session:basename(historySession.getSessionFile()!),all:true,offset:0,limit:100,artifacts:[],deadline:Date.now()+30000},store,project);
+ const messages=store.readArtifact(history.artifact).toString('utf8').split('\n').filter(Boolean).map(s=>JSON.parse(s)).filter(e=>e.type==='message'),invocation=messages.at(-1).id;
+ sealEvidence(store,'review',id+'-source',{kind:'media-catchup-source',project,artifact:history.artifact,invocation,exactNativeSource:true,classifiedAt:new Date().toISOString(),events:messages.map(e=>({id:e.id,kind:e.message.role==='user'?'actual-user':'assistant'})),requests:[],outstandingCalls:[]});
+ const request={action:'media-catchup',id,project,deadline:Date.now()+120000,historyId:id,invocation,sourceReviewId:id+'-source',takeaway:'No changes',remainingWork:'No work remains.',outcomes:[],calls:[]};const pending=await runMediaCatchup(request,store,project);
+ sealEvidence(store,'review',id+'-content',{kind:'media-catchup-content',project,packetDigest:pending.packetDigest,reviewedAt:new Date().toISOString(),evidenceAndNarrativeValid:true});const file=join(project,'request.json');writeFileSync(file,JSON.stringify({...request,contentReviewId:id+'-content'}));
+ store.put('activation',project,{enabled:true,profile:'omp-system-dev',at:Date.now()});
+ const model=provider.modelRegistry.find('9router','code-sol');if(!model)throw Error('Selected model missing');
+ created=await createAgentSession({cwd:project,agentDir,settings:Settings.isolated({'memory.backend':'off','autolearn.enabled':false}),...provider,model,hasUI:true,bindProcessState:false,sessionManager:SessionManager.inMemory(project),agentRegistry:new AgentRegistry(),skills:[],rules:[],contextFiles:[],promptTemplates:[],slashCommands:[],disableExtensionDiscovery:true,preloadedCustomToolPaths:[],toolNames:[],restrictToolNames:true,enableMCP:false,enableLsp:false,enableIrc:false,skipPythonPreflight:true,cacheWarming:false,preloadedPreparedExtensions:[{path:'<omp-system>',resolvedPath:'<omp-system>',factory:plugin,error:null}]});
+ created.session.agent.streamFn=()=>{throw Error('Inference forbidden in presentation smoke')};const runner=created.session.extensionRunner;if(!runner)throw Error('Native extension runner missing');const errors:unknown[]=[],notifications:string[]=[];runner.onError(e=>errors.push(e));
+ const url=new URL('../node_modules/@oh-my-pi/pi-coding-agent/src/modes/runtime-init.ts',import.meta.url).href,init:unknown=await import(url);if(!init||typeof init!=='object'||!('initializeExtensions'in init)||typeof init.initializeExtensions!=='function')throw Error('Pinned runtime initializer missing');
+ const initialize=init.initializeExtensions as (s:AgentSession,o:{uiContext:ExtensionUIContext;reportRuntimeError:(e:ExtensionError)=>void;reportSendError:(action:string,e:Error)=>void})=>Promise<void>;
+ await initialize(created.session,{uiContext:{...runner.getUIContext(),notify:t=>notifications.push(t)},reportRuntimeError:e=>errors.push(e),reportSendError:(action,e)=>errors.push({action,error:String(e)})});
+ const files=readdirSync(project).sort();await created.session.prompt('/omp-system catalog-operator '+file);await created.session.waitForIdle();assert.equal(errors.length,0,JSON.stringify(errors));
+ const delivered=created.session.messages.filter((m:any)=>m.role==='custom'&&m.customType==='omp-system-catchup') as any[];assert.equal(delivered.length,1);assert.equal(delivered[0].content,'Nothing changed and nothing waits on you.');assert.equal(delivered[0].details.verified,true);assert(!existsSync(join(project,'.omp-system-execution.lock')));assert.deepEqual(readdirSync(project).sort(),files);assert.deepEqual(protectedHashes(),before);
+ const evidence={passed:true,project,delivered:delivered[0],notifications,projectFilesUnchanged:true,inference:false,scope:'Actual native custom-message presentation and no-change path; no claim TUI plays video inline'};writeFileSync(join(store.directory,'presentation-evidence.json'),JSON.stringify(evidence,null,2));console.log(JSON.stringify({passed:true,evidence:join(store.directory,'presentation-evidence.json'),inference:false}));
+}finally{try{await created?.session.dispose()}finally{provider.close();store.close()}}

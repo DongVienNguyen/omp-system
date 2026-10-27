@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "omp": "18.12.6",
+  "sdk": "18.12.6",
+  "source": "45c35e40c46166dc726ccc52f5d27f40f2449f99",
+  "bun": "1.4.3",
+  "platform": "win32-x64",
+  "packageImport": "verified",
+  "isolatedSdkInference": "OMP_SDK_OK",
+  "wire": {
+    "model": "code-sol",
+    "effort": "high"
+  },
+  "disposal": true,
+  "limitations": [
+    "cooperative SDK timeout needs supervised worker process",
+    "no OS sandbox for arbitrary executable candidate"
+  ]
+}

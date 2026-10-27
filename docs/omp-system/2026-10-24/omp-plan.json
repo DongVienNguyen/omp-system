@@ -1,0 +1,1024 @@
+{
+  "schema_version": 1,
+  "status": "BLOCKED_FULL_RELEASE_ACCEPTANCE",
+  "execution_authorized": true,
+  "implementation_started": true,
+  "release_scope": "Single complete F01-F12 release; milestones are not narrower releases",
+  "project_root": "C:/Users/dongnv/.local/share/omp-system",
+  "audit_date": "2026-10-24",
+  "updated_at": "2026-10-27",
+  "pause_reason": "Final candidate b0c4ffbb2b6791ab0a0c39b031574488a2aaeea6def0ba4ff06df55ae9c0f0ed: TypeScript clean, Windows120pass527assertions51files, native lifecycle/coexistence and local delivery PASS with source/protected hashes unchanged. Frozen caps/auth precedence/fresh authoring review/standing checkpoints/perf rejection implemented. Local forge stable patch/frontier/current-head/merge-tree policy exercised through operator; independent review2e0c76201b1f4b98b06f510187ddcb2a COMPLETE actual Astra/high after one repair. Bounded authoring/browser/media runtime pass at earlier source; formal maintain semantic BLOCKED, perf frozen-noise BLOCKED. Core live deadline and comparison managed3/4 remain FAILED at30a865; no widened-budget rerun. Full specialized external/forge/controller parity and final full live release remain incomplete. Remote repo/ref/action grant and hosted ref absent. No full release/default rollout/publishing.",
+  "cleanup": {"status": "DONE", "removed": [".lab", "~/.omp/profiles/omp-system-dev", "~/.omp/profiles/omp-system-install-test", "TEMP/omp-system-audit-1792854764204"], "preserved": ["source scripts", "tests", "package.json", "approved plan documents"], "automatic_resume": false},
+  "resume_evidence": ["User explicitly requested resume after cleanup", "Embedded Bun1.4.3 and SDK18.12.6 installed locally with lifecycle scripts disabled", "Dedicated profile root paths verified;1065 AK instruction files snapshotted with matching hashes", "Actual SDK transport, scoped repair/tests/fresh review/certificate, and live Harness2 agg-k1 exercised", "Native Git local fixture install/list/uninstall exercised; hosted install NOT RUN", "Full F01-F12 acceptance remains incomplete; no release claim"],
+  "development_isolation": {
+    "source_root": "C:/Users/dongnv/.local/share/omp-system",
+    "profiles": {"development": "omp-system-dev", "git_install_test": "omp-system-install-test"},
+    "fixture_root": ".lab/workspaces",
+    "bootstrap_owner": "T00",
+    "default_profile_mutation": false,
+    "other_project_mutation_or_restart": false,
+    "environment_scope": "child process only",
+    "max_concurrent_workers": 1,
+    "max_concurrent_live_experiments": 1,
+    "shared_resource_zero_impact_guarantee": false,
+    "admission": "Resolve realpaths and protected roots; reject foreign existing profile; disable or block shared mutation paths; no auto toolchain install",
+    "state": "LOCAL_VERIFIED owned profiles and protected hash checks; no OS sandbox/zero impact claim"
+  },
+  "git_plugin_distribution": {
+    "package_name": "omp-system",
+    "manifest_entry": "omp.extensions",
+    "repository_url": "https://github.com/DongVienNguyen/omp-system",
+    "release_ref": null,
+    "remote_publish_authorized": false,
+    "install_template": "omp --profile omp-system-install-test plugin install github:DongVienNguyen/omp-system#<release-ref>",
+    "development_template": "omp --profile omp-system-dev plugin link <source-root>",
+    "git_project_scope_supported_on_18_12_6": false,
+    "manual_build_or_setup_required": false,
+    "lifecycle_scripts_required": false,
+    "activation_default": "off per canonical project and profile; no jobs/inference on load",
+    "state": "LOCAL Git A/B/A install and fresh native load verified; hosted NOT RUN"
+  },
+  "additional_acceptance": [
+    {"id": "A13", "requirement_ids": ["F01", "F04", "F09", "F10", "F12"], "tasks": ["T00", "T18", "T16"], "status": "LOCAL_SURROGATE_VERIFIED_NO_OS_WRITE_AUDIT", "criterion": "Isolated lab and two-session surrogate coexistence; no default/foreign mutation or process control; resource limits and no zero-impact claim"},
+    {"id": "A14", "requirement_ids": ["F01", "F12"], "tasks": ["T17", "T16"], "status": "LOCAL_GIT_NATIVE_VERIFIED_HOSTED_NOT_AUTHORIZED", "criterion": "Actual clean Git-native install/load/update/rollback/uninstall without manual build/setup; hosted proof separately authorized"}
+  ],
+  "model_policy": {
+    "hard": "9router/code-astra:low",
+    "medium": "9router/code-sol:high",
+    "easy": "9router/code-seek:high",
+    "max_concurrency": 2,
+    "max_recursion_depth": 1,
+    "silent_fallback": false
+  },
+  "source_pins": {
+    "can1357/oh-my-pi": {
+      "sha": "45c35e40c46166dc726ccc52f5d27f40f2449f99",
+      "ref": "v18.12.6",
+      "license": "MIT",
+      "comparison_only": {
+        "head_sha": "0b5c27ab24719c86a5986b95ee55f4e75bc1aaa0",
+        "scope": "Six inspected API docs/types files byte-equal; not whole-repository compatibility"
+      }
+    },
+    "kunchenguid/firstmate": {
+      "sha": "d96bff00dc51369af820f952fd092ad2e45f9f2b",
+      "branch": "main",
+      "license": "MIT"
+    },
+    "EvanBatten/firstmate-for-windows": {
+      "sha": "40d922813c7d0d0c38296d00204505149320bae3",
+      "branch": "main",
+      "license": "MIT"
+    },
+    "kunchenguid/no-mistakes": {
+      "sha": "b529e952605f3f8ec5e1c306ca94459b7727d0c0",
+      "branch": "main",
+      "license": "MIT"
+    },
+    "google-research/harness2": {
+      "sha": "1cfe254e8d25b15f37048c3730134686abe60335",
+      "branch": "main",
+      "license": "Apache-2.0"
+    },
+    "cursor/plugins": {
+      "sha": "9580c23696ac8d7abed0c166f2f9918800afb819",
+      "license": "MIT"
+    },
+    "shrimpwtf/oh-my-pstack": {
+      "sha": "fc0eabd25f21b194a336b640e75e29c252382866",
+      "license": "MIT"
+    },
+    "Jrecos/omp-pstack": {
+      "sha": "824bbacb0ae28b1885ebcb912f0b8d984bb49198",
+      "license": "MIT"
+    }
+  },
+  "requirements": [
+    {
+      "id": "F01",
+      "title": "OMP/AK integration",
+      "acceptance_id": "A01",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F02",
+      "title": "Task orchestration",
+      "acceptance_id": "A02",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F03",
+      "title": "Model and resource policy",
+      "acceptance_id": "A03",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F04",
+      "title": "Workspace ownership",
+      "acceptance_id": "A04",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F05",
+      "title": "Independent quality gate",
+      "acceptance_id": "A05",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F06",
+      "title": "pstack methods",
+      "acceptance_id": "A06",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F07",
+      "title": "Harness² recursive method",
+      "acceptance_id": "A07",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F08",
+      "title": "Eight surfaces and safe promotion",
+      "acceptance_id": "A08",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F09",
+      "title": "Durable lifecycle",
+      "acceptance_id": "A09",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F10",
+      "title": "Observability and bounds",
+      "acceptance_id": "A10",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F11",
+      "title": "Local/remote delivery",
+      "acceptance_id": "A11",
+      "status": "PLANNED"
+    },
+    {
+      "id": "F12",
+      "title": "Package lifecycle",
+      "acceptance_id": "A12",
+      "status": "PLANNED"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T00",
+      "title": "Isolated lab bootstrap and protected-root preflight",
+      "requirement_ids": ["F01", "F04", "F09", "F10", "F12"],
+      "depends_on": [],
+      "outputs": ["Resolved OMP/Bun executable and isolated profile/path map; child-only env; protected baseline; minimal AK snapshot; no model calls or global mutations"],
+      "files": ["scripts/dev-launch.ps1", "scripts/dev-preflight.ts", ".gitignore", "tests/scenarios/dev-isolation.json"],
+      "verification": [{"command": "bun scripts/dev-preflight.ts --verify", "argv": ["bun", "scripts/dev-preflight.ts", "--verify"], "cwd": "C:/Users/dongnv/.local/share/omp-system", "condition": "Resolve actual executable before running; no auto install; script is created by T00", "status": "NOT RUN", "kind": "PROPOSED direct bootstrap, no package script dependency"}],
+      "exit_criteria": ["No default profile/foreign project writes or process control; resolved profile/cache/state roots allowlisted; safe offline lab or precise BLOCKED reason"],
+      "execution_evidence": ["Embedded Bun1.4.3 via omp.exe BUN_BE_BUN=1", "Isolated profile path queries matched expected roots", "1065 AK markdown files match managed source hashes; no managed file edited", "Disk headroom passes after authorized cleanup; protected global fingerprints unchanged"],
+      "rollback": "Remove only newly created owned lab/profile artifacts after owned jobs settle; retain evidence; never restore default config over concurrent user changes.",
+      "model_class": "hard",
+      "blockers": ["B08", "B10"],
+      "status": "DONE",
+      "acceptance_ids": ["A01", "A04", "A09", "A10", "A12", "A13"]
+    },
+    {
+      "id": "T01",
+      "title": "Compatibility and source boundary",
+      "requirement_ids": [
+        "F01",
+        "F03",
+        "F06",
+        "F12"
+      ],
+      "depends_on": ["T00"],
+      "outputs": [
+        "Probe installed OMP SDK imports, explicit model/thinking, isolated discovery, hook binding and native pstack Windows path risk; pin exact compatibility and source licenses.",
+        "Immutable verification evidence for T01"
+      ],
+      "files": [
+        "package.json",
+        "scripts/verify.ts",
+        "src/runtime.ts",
+        "compatibility.lock.json",
+        "upstream.lock.json",
+        "LICENSE",
+        "NOTICE"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case compatibility",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Exact 18.12.6 APIs exercised; no guessed hooks/model args; Windows defects reproduced or source risk disproved; no other agent CLI.",
+        "Standalone Bun executable/import route verified or bootstrap BLOCKED; no implicit toolchain installation."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B01",
+        "B03"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A01",
+        "A03",
+        "A06",
+        "A12"
+      ]
+    },
+    {
+      "id": "T02",
+      "title": "Versioned contracts and state",
+      "requirement_ids": [
+        "F01",
+        "F02",
+        "F05",
+        "F07",
+        "F09",
+        "F10"
+      ],
+      "depends_on": [
+        "T01"
+      ],
+      "outputs": [
+        "Define all spec v1 records and deterministic snapshot/artifact identity; SQLite transactions, reservations, schema version/migration, artifact atomic publish.",
+        "Immutable verification evidence for T02"
+      ],
+      "files": [
+        "src/contracts.ts",
+        "src/state.ts",
+        "schemas/omp-system.v1.json"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case state-contracts",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Malformed boundary rejected; interrupted reservation/artifact publish recover; task DAG cycle and missing IDs rejected."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A01",
+        "A02",
+        "A05",
+        "A07",
+        "A09",
+        "A10"
+      ]
+    },
+    {
+      "id": "T03",
+      "title": "Native package bootstrap and AK baseline",
+      "requirement_ids": [
+        "F01",
+        "F12"
+      ],
+      "depends_on": [
+        "T01",
+        "T02"
+      ],
+      "outputs": [
+        "One namespaced extension/tool/command; per-project/profile opt-in; no second controller; AK ownership inventory and plugin load collision detection.",
+        "Ownership handoff: extend package.json verifier bootstrap created by T01; do not replace it.",
+        "Git-installable OMP plugin manifest; inert on load; dev profile only; serial manifest handoff to T17.",
+        "Immutable verification evidence for T03"
+      ],
+      "files": [
+        "package.json",
+        "bun.lock",
+        "src/extension.ts",
+        "src/lifecycle.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case package-bootstrap",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Load exactly once; disable cleanly; all AK claims unchanged; foreign registrations preserved."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "medium",
+      "blockers": [],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A01",
+        "A12"
+      ]
+    },
+    {
+      "id": "T04",
+      "title": "Exact model binding and resource budgets",
+      "requirement_ids": [
+        "F03",
+        "F10"
+      ],
+      "depends_on": [
+        "T01",
+        "T02",
+        "T03"
+      ],
+      "outputs": [
+        "Classify before reservation; immutable SDK packet with exact selector/effort; receipts, unknown fields, bounded transport retries, fallback authorization, concurrency2 depth1.",
+        "Immutable verification evidence for T04"
+      ],
+      "files": [
+        "src/routing.ts",
+        "src/budget.ts",
+        "src/dispatch.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case routing",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Mixed concurrent easy/medium/hard/helper calls match receipts; races cannot exchange profiles; unavailable model blocks; reservations enforce hard limits."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B01",
+        "B06"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A03",
+        "A10"
+      ]
+    },
+    {
+      "id": "T05",
+      "title": "Snapshot/workspace ownership and processes",
+      "requirement_ids": [
+        "F02",
+        "F04",
+        "F09"
+      ],
+      "depends_on": [
+        "T02",
+        "T03"
+      ],
+      "outputs": [
+        "Freeze dirty/staged/untracked/config scope; worktree/lease ownership; guarded patch integration; Windows process identity, cancel descendants; executable trust boundary.",
+        "Immutable verification evidence for T05"
+      ],
+      "files": [
+        "src/workspaces.ts",
+        "src/processes.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case workspace-processes",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Overlap denied; dirty/unlanded work survives conflict/cancel; command descendants settle on Windows; process/worktree not falsely called sandbox."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B02"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A02",
+        "A04",
+        "A09"
+      ]
+    },
+    {
+      "id": "T06",
+      "title": "Fresh reviewer and command evidence",
+      "requirement_ids": [
+        "F05",
+        "F11"
+      ],
+      "depends_on": [
+        "T04",
+        "T05"
+      ],
+      "outputs": [
+        "Explicit trusted reviewer context, no ambient target instructions/MCP/extensions/memory; controlled argv command runner and full review/check coverage.",
+        "Immutable verification evidence for T06"
+      ],
+      "files": [
+        "src/review.ts",
+        "src/checks.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case reviewer-boundary",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Hostile repo/implementer cannot steer reviewer policy or forge evidence; actual runtime app observation captured with digest."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B02"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A05",
+        "A11"
+      ]
+    },
+    {
+      "id": "T07",
+      "title": "Deterministic certifier and repair transitions",
+      "requirement_ids": [
+        "F05",
+        "F11"
+      ],
+      "depends_on": [
+        "T02",
+        "T06"
+      ],
+      "outputs": [
+        "Certify complete checks/review only; invalidate on any relevant digest mutation; findings/repair/new review; barrier prevents pending/superseded work certification.",
+        "Immutable verification evidence for T07"
+      ],
+      "files": [
+        "src/gate.ts",
+        "src/findings.ts",
+        "tests/gate-negative.test.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case gate-negative",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Independent adversarial runner rejects forged/stale/zero-test/missing-log/malformed/timeout/cancel/partial review; repair cannot retain old cert."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B02"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A05",
+        "A11"
+      ]
+    },
+    {
+      "id": "T08",
+      "title": "Single coordinator and lifecycle reconciliation",
+      "requirement_ids": [
+        "F02",
+        "F09",
+        "F10"
+      ],
+      "depends_on": [
+        "T04",
+        "T05",
+        "T07"
+      ],
+      "outputs": [
+        "Dependency DAG, autonomous phase transition, monitor/steer durable inbox, no blind finish; generation ownership; resume/fork/restart unknown jobs block.",
+        "Immutable verification evidence for T08"
+      ],
+      "files": [
+        "src/coordinator.ts",
+        "src/tasks.ts",
+        "src/status.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case lifecycle",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Kill/restart/branch/cancel scenarios show no duplicate tasks or ghost PASS; status exposes real blockers/jobs/evidence and no spin."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A02",
+        "A09",
+        "A10"
+      ]
+    },
+    {
+      "id": "T09",
+      "title": "pstack inventory and native workflow integration",
+      "requirement_ids": [
+        "F06",
+        "F01"
+      ],
+      "depends_on": [
+        "T03",
+        "T04",
+        "T05",
+        "T07",
+        "T08"
+      ],
+      "outputs": [
+        "Reuse pinned native port pieces; reconcile 0.15.28 to requested original0.15.32 inventory; preserve principles/playbooks/how/why/architect/arena/interrogate/blast-radius/verification; no competing extension.",
+        "Immutable verification evidence for T09"
+      ],
+      "files": [
+        "src/pstack.ts",
+        "vendor/pstack/**",
+        "pstack-fidelity.json",
+        "scripts/check-pstack-content.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case pstack-workflows",
+          "status": "PASS_CORE_LIVE_SPECIALIZED_GAPS_REMAIN",
+          "kind": "Actual core how/why/architect/arena/interrogate/blast-radius and create/maintain verification drove real artifacts",
+          "evidence": ".lab/evidence/pstack-workflows-1793036103875-e6d72c63-7e7c-4a5f-93e6-997f846d64b1.json",
+          "limits": "Candidate a8cf95b1e6630ede6d270df637b6e055ead25b8fbd71f1fc5011dd659fbf04dd;210files82entries inventory integrity is not complete specialized parity"
+        }
+      ],
+      "exit_criteria": [
+        "Inventory hash/link/semantic mapping complete; core workflows run actual artifacts; arena isolation/graft/verify, cross-review and runtime verification proven."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B03"
+      ],
+      "status": "CORE_LIVE_VERIFIED_SPECIALIZED_ACCEPTANCE_OPEN",
+      "acceptance_ids": [
+        "A01",
+        "A06"
+      ]
+    },
+    {
+      "id": "T10",
+      "title": "OMP substrate and repository-task adapter",
+      "requirement_ids": [
+        "F07",
+        "F08"
+      ],
+      "depends_on": [
+        "T02",
+        "T04",
+        "T05",
+        "T07",
+        "T08"
+      ],
+      "outputs": [
+        "Port pinned adapter contract, frozen task source, materialize all8 surfaces with actual loaded behavior; isolated OMP execution/trajectory and deliverable extraction; preflight/bounds.",
+        "Immutable verification evidence for T10"
+      ],
+      "files": [
+        "src/harness/spec.ts",
+        "src/harness/substrate.ts",
+        "src/harness/surfaces.ts",
+        "src/harness/repository-task.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case harness-surfaces",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "All8 surfaces execute or release blocks; no privileged policy mutations, no missing artifact masquerading as task success; SDK worker trust boundary proven."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B02",
+        "B04"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A07",
+        "A08"
+      ]
+    },
+    {
+      "id": "T11",
+      "title": "Faithful parallel/sequential recursion",
+      "requirement_ids": [
+        "F07"
+      ],
+      "depends_on": [
+        "T10"
+      ],
+      "outputs": [
+        "Port 2k INV/DOM then k independent agg; seq current/history compositions finals c1..ck; source-derived differential traces k1/k2 and stage retries/errors/no-op.",
+        "Immutable verification evidence for T11"
+      ],
+      "files": [
+        "src/harness/recursion.ts",
+        "src/harness/ledger.ts",
+        "tests/fixtures/harness2/**",
+        "tests/harness-parity.test.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case harness-parity",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Trace and deliverable semantics equal pinned source for both modes k1/k2; deterministic ledger after drain; concurrency2 changes schedule not method."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B04"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A07"
+      ]
+    },
+    {
+      "id": "T12",
+      "title": "Selection/reflection/scoped experience library",
+      "requirement_ids": [
+        "F07",
+        "F08"
+      ],
+      "depends_on": [
+        "T11"
+      ],
+      "outputs": [
+        "Finals-only selection, anonymous IDs, k1 trivial, drops and fallback state; adoption reflection with provenance; project/domain/model/version scope and contamination checks.",
+        "Immutable verification evidence for T12"
+      ],
+      "files": [
+        "src/harness/selection.ts",
+        "src/harness/library.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case harness-learning",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "No baseline silently added; missing output rejected; selector failure not ok; task2 consumes eligible task1 experience after restart without leaking scope."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B04"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A07",
+        "A08"
+      ]
+    },
+    {
+      "id": "T13",
+      "title": "Separate safe production promotion",
+      "requirement_ids": [
+        "F08",
+        "F05"
+      ],
+      "depends_on": [
+        "T07",
+        "T12"
+      ],
+      "outputs": [
+        "Frozen acceptance/regression and immutable coordinator/gate/pool/baseline; method winner separate promotion; explicit authorization and rollback.",
+        "Immutable verification evidence for T13"
+      ],
+      "files": [
+        "src/promotion.ts",
+        "tests/promotion-boundary.test.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case promotion",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution"
+        }
+      ],
+      "exit_criteria": [
+        "Worse selected candidate/failing regression/untrusted plugin cannot change active policy; approved candidate activates only with fresh cert and retains rollback."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B02",
+        "B04"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A05",
+        "A08"
+      ]
+    },
+    {
+      "id": "T14",
+      "title": "Bounded live integrated experiment",
+      "requirement_ids": [
+        "F03",
+        "F07",
+        "F09",
+        "F10"
+      ],
+      "depends_on": [
+        "T08",
+        "T09",
+        "T12",
+        "T13"
+      ],
+      "outputs": [
+        "One actual OMP-only end-to-end task with model receipts, proposal/rollout/composition/selection/reflection/library retrieval; runtime cancel/restart, usage actual/estimate/unknown.",
+        "Immutable verification evidence for T14"
+      ],
+      "files": [
+        "tests/scenarios/live-experiment.json",
+        "scripts/verify.ts"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case live-experiment --live",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; must implement runner before execution",
+          "argv": ["bun", "run", "verify", "--case", "live-experiment", "--live"],
+          "cwd": "C:/Users/dongnv/.local/share/omp-system",
+          "condition": "Explicit admitted live RunBudget and authority reference required"
+        }
+      ],
+      "exit_criteria": [
+        "Observe task artifact behavior, no other agent CLI; bounded live stages and hard quotas; failing run never yields success certificate."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B04",
+        "B06"
+      ],
+      "status": "DONE",
+      "acceptance_ids": [
+        "A03",
+        "A07",
+        "A09",
+        "A10"
+      ]
+    },
+    {
+      "id": "T15",
+      "title": "Authorized delivery and remote reconciliation",
+      "requirement_ids": [
+        "F11",
+        "F05"
+      ],
+      "depends_on": [
+        "T07",
+        "T08",
+        "T09"
+      ],
+      "outputs": [
+        "Native Git/provider API delivery with action/repo/ref authority; local evidence separate remote CI at candidate head; repair revalidation no forced unrelated history.",
+        "Immutable verification evidence for T15"
+      ],
+      "files": [
+        "src/delivery.ts",
+        "tests/scenarios/delivery.json"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case delivery --local",
+          "argv": ["bun", "run", "verify", "--case", "delivery", "--local"],
+          "cwd": "C:/Users/dongnv/.local/share/omp-system",
+          "status": "NOT RUN",
+          "kind": "PROPOSED package command; local case only"
+        },
+        {
+          "command": "bun run verify --case delivery --remote",
+          "argv": ["bun", "run", "verify", "--case", "delivery", "--remote"],
+          "cwd": "C:/Users/dongnv/.local/share/omp-system",
+          "condition": "Explicit action/repo/ref authority and approved remote credentials required",
+          "status": "NOT RUN",
+          "kind": "PROPOSED authority-dependent remote scenario, never implied by local case"
+        }
+      ],
+      "exit_criteria": [
+        "Local handoff runs; denied credentials/actions block remote without false remote PASS; authorized remote smoke only when authority provided."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "medium",
+      "blockers": [
+        "B05"
+      ],
+      "status": "LOCAL_VERIFIED_REMOTE_NOT_RUN",
+      "acceptance_ids": [
+        "A05",
+        "A11"
+      ]
+    },
+    {
+      "id": "T16",
+      "title": "Windows acceptance, baseline comparison and rollout",
+      "requirement_ids": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "F07",
+        "F08",
+        "F09",
+        "F10",
+        "F11",
+        "F12"
+      ],
+      "depends_on": [
+        "T14",
+        "T15",
+        "T17",
+        "T18"
+      ],
+      "outputs": [
+        "Complete A01-A14 independent suite including isolated coexistence and Git plugin lifecycle; frozen bug/feature/refactor/harness comparison; Windows packaging and rollback.",
+        "Immutable verification evidence for T16"
+      ],
+      "files": [
+        "scripts/package.ts",
+        "tests/scenarios/windows-acceptance.json",
+        "docs/operations.md",
+        "CHANGELOG.md"
+      ],
+      "verification": [
+        {
+          "command": "bun run verify --case windows-acceptance",
+          "argv": ["bun", "run", "verify", "--case", "windows-acceptance"],
+          "cwd": "C:/Users/dongnv/.local/share/omp-system",
+          "status": "PASS_DETERMINISTIC_NOT_FULL_RELEASE",
+          "kind": "Actual Windows runtime/process/state/gate suite;109 pass0fail480assertions across49files; not full release",
+          "evidence": ".lab/evidence/windows-acceptance-1793035957707-35daa70d-aba3-4702-aa31-3da2a372ed8f.json",
+          "candidate": "a8cf95b1e6630ede6d270df637b6e055ead25b8fbd71f1fc5011dd659fbf04dd"
+        },
+        {
+          "command": "bun run verify --case baseline-comparison --live",
+          "argv": ["bun", "run", "verify", "--case", "baseline-comparison", "--live"],
+          "cwd": "C:/Users/dongnv/.local/share/omp-system",
+          "condition": "Explicit admitted comparison RunBudget and live authority reference required",
+          "status": "PASS_BOUNDED_COMPARISON_NO_UNIVERSAL_GAIN",
+          "kind": "Both arms4/4; baseline93.233s managed133.332s;12workers;costUNKNOWN; managed adds reviewer budget",
+          "evidence": ".lab/evidence/baseline-comparison-1793035254914-36e96407-5474-4d19-9074-7deed9813c54.json",
+          "candidate": "a8cf95b1e6630ede6d270df637b6e055ead25b8fbd71f1fc5011dd659fbf04dd"
+        },
+        {
+          "command": "bun run package",
+          "argv": ["bun", "run", "package"],
+          "cwd": "C:/Users/dongnv/.local/share/omp-system",
+          "status": "PASS_LOCAL_NOT_PUBLISHED",
+          "kind": "Actual285-file manifest verified; no publishing authority inferred",
+          "evidence": ".lab/packages/1793000039167/package-manifest.json"
+        }
+      ],
+      "exit_criteria": [
+        "All required acceptance proven at exact candidate; remote NOT RUN cannot be called remote verified; measured outcomes without universal benefit claims; AK baseline preserved and rollback exercised."
+      ],
+      "rollback": "Stop owned workers; retain logs/dirty worktrees; revert only task-owned patch/registration and restore prior schema/config from verified snapshot; never reset foreign or AK files.",
+      "model_class": "hard",
+      "blockers": [
+        "B05",
+        "B07"
+      ],
+      "status": "LOCAL_WINDOWS_VERIFIED_FULL_RELEASE_BLOCKED",
+      "acceptance_ids": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+        "A14"
+      ]
+    }
+    ,{
+      "id": "T17",
+      "title": "Clean Git-native plugin lifecycle",
+      "requirement_ids": ["F01", "F12"],
+      "depends_on": ["T03"],
+      "outputs": ["Clean local Git commit install/load/update/rollback/uninstall in dedicated profile; resolved source lock; hosted Git proof only with remote authorization; no manual build/setup or lifecycle-script trust required"],
+      "files": ["package.json", "bun.lock", "tests/scenarios/git-plugin-install.json", "docs/install.md"],
+      "verification": [{"command": "bun run verify --case coexistence", "argv": ["bun", "run", "verify", "--case", "coexistence"], "cwd": "C:/Users/dongnv/.local/share/omp-system", "condition": "Native local Git lifecycle executed inside simultaneous owned-session coexistence; hosted not authorized", "status": "PASS_LOCAL_GIT_HOSTED_NOT_RUN", "kind": "Actual install/reinstall/update/rollback/uninstall and load once, state preserved", "evidence": ".lab/evidence/coexistence-1793036026372-86105c14-3ded-4432-94e8-1f924a35346e.json", "candidate": "a8cf95b1e6630ede6d270df637b6e055ead25b8fbd71f1fc5011dd659fbf04dd"}],
+      "exit_criteria": ["A14 clean Git installation loads all required runtime assets without build/setup, scripts-disabled path works, exact commit retained, no default-profile changes; hosted proof not inferred from local Git"],
+      "rollback": "Reinstall previous verified Git ref and compatible retained state in target lab profile only; never broad upgrade or mutate other profiles; no auto remote publish.",
+      "model_class": "medium",
+      "blockers": ["B09"],
+      "status": "LOCAL_VERIFIED_HOSTED_NOT_RUN",
+      "acceptance_ids": ["A01", "A12", "A14"]
+    },
+    {
+      "id": "T18",
+      "title": "Independent coexistence and noninterference acceptance",
+      "requirement_ids": ["F01", "F04", "F09", "F10", "F12"],
+      "depends_on": ["T08", "T17"],
+      "outputs": ["Concurrent surrogate normal-profile and lab-profile evidence; protected config/AK unchanged; scoped process control; resource admission and shared path diagnostic; no actual user project used as fixture"],
+      "files": ["tests/scenarios/coexistence.json", "scripts/verify-coexistence.ts"],
+      "verification": [{"command": "bun run verify --case coexistence", "argv": ["bun", "run", "verify", "--case", "coexistence"], "cwd": "C:/Users/dongnv/.local/share/omp-system", "condition": "Owned surrogate sessions; no inference", "status": "PASS_SCOPED_NO_ZERO_IMPACT_CLAIM", "kind": "Actual two-session snapshots preserved through lifecycle/cancel; protected hashes unchanged", "evidence": ".lab/evidence/coexistence-1793036026372-86105c14-3ded-4432-94e8-1f924a35346e.json", "candidate": "a8cf95b1e6630ede6d270df637b6e055ead25b8fbd71f1fc5011dd659fbf04dd"}],
+      "exit_criteria": ["A13 no protected file/registration/session changes, profile leakage, cross-project discovery or unrelated process termination; managed worker cap1; shared latency/quota caveat explicit"],
+      "rollback": "Settle/stop only owned surrogate and lab jobs; retain artifacts; do not restore default profile or restart unrelated OMP sessions.",
+      "model_class": "hard",
+      "blockers": ["B08"],
+      "status": "DONE_SCOPED_NO_ZERO_IMPACT_CLAIM",
+      "acceptance_ids": ["A01", "A04", "A09", "A10", "A12", "A13"]
+    }
+  ],
+  "blockers": [
+    {
+      "id": "B01",
+      "owner": "T01/T04",
+      "description": "Exact model binding and managed/foreign hook boundaries exercised; native/default ownership preserved",
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "B02",
+      "owner": "T05/T06/T07/T10/T13",
+      "description": "Fresh read-only reviewer and exact-reviewed trusted executable surfaces exercised. Arbitrary untrusted executable OS sandbox unavailable; not admitted",
+      "status": "TRUSTED_MODE_VERIFIED_OS_SANDBOX_UNAVAILABLE"
+    },
+    {
+      "id": "B03",
+      "owner": "T01/T09",
+      "description": "Final b0c4ff candidate Windows120/0, TypeScript/native lifecycle/coexistence/delivery-local pass. Local forge patch/frontier policy exercised by real Git/operator regression and review2e0c76201b1f4b98b06f510187ddcb2a COMPLETE. Bounded authoring/browser/media earlier runtime proofs pass; latest formal maintain semantic-blocked and perf noise-blocked. Core live timed out; latest comparison managed3/4 baseline4/4. Full specialized external-service/forge/controller semantic parity and final live release acceptance incomplete; local supplied forge observations never authenticated remote proof.",
+      "status": "LOCAL_VERIFIED_LIVE_AND_SPECIALIZED_BLOCKED"
+    },
+    {
+      "id": "B04",
+      "owner": "T10/T11/T12/T14",
+      "description": "Source differential agg/seq k1/k2, eight reviewed surfaces, eligible task2 learning, selected harness certification/promotion/rollback actual next rollout proven; final task/source anti-replay hardening covered separately",
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "id": "B05",
+      "owner": "T15/T16",
+      "description": "Remote repository credentials and action authority not granted",
+      "status": "OPEN"
+    },
+    {
+      "id": "B06",
+      "owner": "T04/T14",
+      "description": "Operator authorized main OMP 9router endpoint/credential reuse. Endpoint/API matched, process-local credential resolved and single code-sol/high request returned OK. Core live acceptance later passed. No key printed or written to repo/profile config; backend-family identity UNKNOWN. Historical HTTP401 remains recorded, no longer active auth blocker.",
+      "status": "RESOLVED_AUTHORIZED_PROCESS_LOCAL_SOURCE"
+    },
+    {
+      "id": "B07",
+      "owner": "T16",
+      "description": "Latest four-task comparison at30a865: baseline4/4 managed3/4; managed harness reviewer timed out and no integration certificate issued.12worker calls, no automatic recovery budget increase. Prior a8cf95 both4/4 managed slower remains historical. No general throughput/quality/cost advantage claimed.",
+      "status": "LATEST_COMPARISON_FAILED"
+    }
+    ,{"id": "B08", "owner": "T00/T18/T16", "description": "Owned simultaneous native sessions survived lifecycle/cancel; protected hashes stable. Native Unicode/privacy/populatedSQLite retention and explicit resource/rate429 launch stops proven; no OS-wide write audit/zero-impact guarantee", "status": "LOCAL_SCOPED_VERIFIED"},
+    {"id": "B09", "owner": "T17/T16", "description": "Local native Git A/B/A install/load/uninstall proven; hosted release ref/publish authority missing", "status": "PARTIAL"},
+    {"id": "B10", "owner": "T00/T01", "description": "Historical disk shortage cleared before resumed implementation; preflight enforces 2GiB headroom before allocation", "status": "RESOLVED"}
+    ,{"id":"B11","owner":"T09/T16","description":"Original wake run95bba6bed3fd4974a392e093a9606d81 remains historical FAILED; explicit user-authorized recovery4d5c2c018aa743e6b546b161f8e811e9 COMPLETE at exact corrected snapshot, actual Astra/high","status":"RESOLVED_BY_AUTHORIZED_RECOVERY"}
+  ],
+  "audit_verification": {
+    "E01": "LOCAL_VERIFIED",
+    "E02": "LOCAL_VERIFIED",
+    "E03": "LOCAL_VERIFIED bounded endpoint only",
+    "E04": "Seek first parse failure; second HTTP200",
+    "E05": "LOCAL_VERIFIED actual OMP CLI all three profiles",
+    "E06": "LOCAL_VERIFIED request/stop notifications only",
+    "E07": "NOT VERIFIED child routing: rejection then deadline",
+    "E08": "Source research tasks only",
+    "E09": "SOURCE_ONLY",
+    "E10": "Context Mode intermittent execution failure"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "omp-system",
+  "version": "0.1.0",
+  "description": "Isolated OMP-native task orchestration and evidence gates",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DongVienNguyen/omp-system.git"
+  },
+  "engines": {
+    "bun": ">=1.4.3"
+  },
+  "omp": {
+    "extensions": ["./src/extension.ts"]
+  },
+  "files": ["src/", "vendor/", "schemas/", "LICENSE", "NOTICE", "compatibility.lock.json", "upstream.lock.json", "README.md"],
+  "scripts": {
+    "verify": "bun scripts/verify.ts",
+    "test": "bun test",
+    "package": "bun scripts/package.ts"
+  },
+  "dependencies": {
+    "@oh-my-pi/pi-coding-agent": "18.12.6",
+    "puppeteer-core": "25.3.0",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "typescript": "^7.0.2"
+  }
+}

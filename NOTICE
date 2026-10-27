@@ -1,0 +1,6 @@
+omp-system includes modified TypeScript adaptations of Google Harness² core recursion, selection and experience-library methods.
+Original: Copyright 2026 Google LLC.
+Source: https://github.com/google-research/harness2 at 1cfe254e8d25b15f37048c3730134686abe60335.
+These adapted files retain Apache-2.0 licensing and attribution. Full license: vendor/licenses/harness2.txt.
+OMP SDK is a pinned dependency, not an OMP runtime fork. SDK MIT notice: vendor/licenses/omp.txt.
+AgentKit content is not included in distributed package; local lab instruction snapshots are excluded from packaging.

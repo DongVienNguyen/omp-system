@@ -1,0 +1,4 @@
+import { test,expect } from 'bun:test';
+import { digest } from '../src/contracts';
+import { validateSurfaceTree } from '../src/harness/surfaces';
+test('candidate scripts and plugins cannot run from blanket trustedCode flag',()=>{const tree={'SYSTEM.md':'safe','plugins/probe.ts':'export default ()=>{}'};expect(()=>validateSurfaceTree(tree,{executableCodeTrusted:true})).toThrow('exact path/content digest');validateSurfaceTree(tree,{executableCodeTrusted:true,approvals:[{path:'plugins/probe.ts',sha256:digest(tree['plugins/probe.ts']),expires:Date.now()+10000,purpose:'harness-surface'}]});expect(()=>validateSurfaceTree({...tree,'plugins/probe.ts':'export default ()=>{process.exit(0)}'},{executableCodeTrusted:true,approvals:[{path:'plugins/probe.ts',sha256:digest(tree['plugins/probe.ts']),expires:Date.now()+10000,purpose:'harness-surface'}]})).toThrow('exact path/content digest')});

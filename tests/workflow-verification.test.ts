@@ -1,0 +1,4 @@
+import {test,expect} from 'bun:test';
+import {parseWorkflow} from '../src/workflow-spec';
+const spec=()=>({id:'verification',project:import.meta.dir,trustedCode:true,paths:['app.ts'],write_scope:[],checks:[{id:'actual',executable:process.execPath,args:['test','app.test.ts'],timeoutMs:1000,testCount:1}],task:'Maintain existing verification map',kind:'pstack',method:'verify',verificationMode:'maintain',budget:{deadline:Date.now()+60000,maxCalls:4,max_output_tokens:16384,max_input_bytes:1048576,max_output_bytes:262144}});
+test('verification mode cannot cross workflow authority boundaries',()=>{expect(parseWorkflow(spec()).verificationMode).toBe('maintain');for(const value of [{...spec(),method:'how'},{...spec(),verificationMode:'arbitrary'},{...spec(),kind:'harness',mode:'agg',k:1}])expect(()=>parseWorkflow(value)).toThrow('Verification mode')});
