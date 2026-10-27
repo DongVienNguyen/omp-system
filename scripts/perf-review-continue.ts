@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import {join} from 'node:path';
+import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
+import {root,profileRoot,protectedHashes} from './dev-preflight';
+import {Store} from '../src/state';
+import {snapshot,materialize,type Snapshot} from '../src/workspaces';
+import {createMethodHost} from '../src/pstack-host';
+import {runMethod,type MethodArtifact} from '../src/pstack';
+import {validateSemanticReview} from '../src/catalog-semantics';
+import {executeCheck} from '../src/checks';
+import {digest,type Check,type Command} from '../src/contracts';
+import {openProvider} from '../src/provider';
+import {admitResources} from '../src/resource-admission';
+
+const id=process.argv[2];if(!id||!/^perf-[a-f0-9-]+$/.test(id))throw Error('Exact retained performance run required');
+const admission=await admitResources(root,true),store=new Store(join(root,'.lab/state',id)),before=protectedHashes();
+const work=join(root,'.lab/workspaces',id,'review-continuation');mkdirSync(work,{recursive:false});
+const provider=await openProvider(join(profileRoot('omp-system-dev'),'agent'));
+try{
+ const rejected=store.get<any>('catalog-decision',id);if(!rejected||rejected.kind!=='perf-issue'||!/^Workflow role .* failed: incomplete_reply$/.test(rejected.rejectionReason))throw Error('Only measured candidate with incomplete review eligible');
+ const operation=rejected.frozen.operation;assert.equal(operation.samples,5);assert.equal(operation.noise,20);assert.equal(operation.target,50);assert.equal(operation.minimumDelta,21);assert.equal(operation.expectedWork,16000000);
+ for(const side of ['before','after']){const values=rejected[side].samples as number[];assert.equal(values.length,operation.samples);assert(values.every(Number.isFinite));assert(Math.max(...values)-Math.min(...values)<=operation.noise);assert.equal([...values].sort((a,b)=>a-b)[2],rejected[side].median)}
+ assert(rejected.after.median<=operation.target);assert(rejected.before.median-rejected.after.median>Math.max(operation.minimumDelta,operation.noise));
+ const candidateChecks=(rejected.actualChecks as Check[]).filter(c=>c.id===operation.metric.id&&c.candidate!==(rejected.actualChecks as Check[])[0]!.candidate);assert.equal(candidateChecks.length,5);assert(candidateChecks.every(c=>c.status==='passed'&&c.exitCode===0));
+ const candidate=store.get<Snapshot>('snapshot',candidateChecks[0]!.candidate);if(!candidate||candidateChecks.some(c=>c.candidate!==candidate.id))throw Error('Exact measured candidate snapshot missing');
+ const {id:snapshotId,...snapshotBody}=candidate;assert.equal(digest(snapshotBody),snapshotId);for(const file of candidate.files)assert.equal(digest(store.readArtifact(file.artifact).toString('base64')),file.hash);
+ const measured=(rejected.actualChecks as Check[]).map(c=>{assert.equal(store.readArtifact(c.log).toString('utf8').trim(),c.observation);return c});
+ for(const [side,candidateId]of [['before',(rejected.actualChecks as Check[])[0]!.candidate],['after',candidate.id]] as const){const rows=measured.filter(c=>c.id===operation.metric.id&&c.candidate===candidateId),samples=rows.map(c=>JSON.parse(c.observation).metric);const expected=rejected[side].samples as number[];assert.deepEqual(samples.slice(-5),expected);assert(rows.every(c=>c.status==='passed'&&c.exitCode===0&&JSON.parse(c.observation).errors===0&&JSON.parse(c.observation).work===operation.expectedWork));}
+ for(const c of rejected.actualChecks as Check[])store.readArtifact(c.log);for(const side of ['before','after'])store.readArtifact(rejected.traces[side].artifact);
+ const originalReceipts=store.list<{evidence:string}>('method-receipt'),used=originalReceipts.reduce((n,r)=>{const e=JSON.parse(store.readArtifact(r.evidence).toString());return n+(e.attempts?.length??1)},0);if(used+3>24)throw Error('Original call ceiling leaves no three-role review capacity');
+ materialize(store,candidate,work);const current=snapshot(store,work,candidate.scope),commands=(rejected.frozen.regression as Command[]).map(c=>({...c,cwd:work}));
+ const proof=await executeCheck(store,commands[0]!,{candidate:current.id,policy:digest(rejected.frozen),plan:digest(commands)},{trustedCode:true,root:work});assert.equal(proof.status,'passed');
+ const node=operation.metric.executable;const boundary=await executeCheck(store,{id:'simd-boundaries',executable:node,args:['--eval',"const {calculate}=require('./app.cjs');for(const n of [0,1,2,3,4,7,31,128,1025,10000,1.5,-1,NaN]){let expected=0;for(let i=0;i<n;i++)expected+=Math.sqrt(i);if(!Object.is(calculate(n),expected))throw Error('Boundary sum differs '+n)}console.log('All odd/even/boundary source sums match original addition order')"],cwd:work,timeoutMs:15000,runner:'command',proof:{kind:'exit-code',reason:'Actual loaded candidate computes same ordered scalar terms for boundary inputs'}},{candidate:current.id,policy:digest(rejected.frozen),plan:digest('simd-boundaries')},{trustedCode:true,root:work});assert.equal(boundary.status,'passed');
+ const host=createMethodHost({tokenLimits:{max_output_tokens:16384,max_input_bytes:1048576,max_output_bytes:262144},store,base:current,root:work,task:'Independent final performance review. First workspace_read app.cjs and pin.cjs. Return JSON only {findings:[{blocking:boolean,resolved:boolean,evidence:string}]}. Decode actual SIMD, verify every term, sum order, bounds/fallback, workload consumption, frozen measurement, trace plausibility and declared scope. No edits or unobserved claims. Keep each report under500 words.',readScope:candidate.scope,writeScope:[],checks:commands,runtime:{agentDir:join(profileRoot('omp-system-dev'),'agent'),...provider},maxCalls:3,deadline:Date.now()+240000,trustedCode:true});
+ const evidence:MethodArtifact={id:id+'-frozen-measurement',role:'host-measurement',body:JSON.stringify({before:rejected.before,after:rejected.after,delta:rejected.delta,unit:operation.unit,expectedWork:operation.expectedWork,noise:operation.noise,target:operation.target,minimumDelta:operation.minimumDelta,checks:(rejected.actualChecks as Check[]).map(c=>({id:c.id,status:c.status,observation:c.observation,log:c.log})),beforeTrace:rejected.traces.before.analysis,afterTrace:rejected.traces.after.analysis,boundary,regression:proof,claim:'Owned warm CLI workload only; no production/global/hardware-cause claim'}),evidence:[proof.log,boundary.log]};
+ const fixed={...host,workspace:async()=>work,run:(role:string,mission:string,inputs:MethodArtifact[],opts:{workspace:string;readOnly:boolean})=>host.run(role,mission+' Return JSON findings only. Read app.cjs and pin.cjs before verdict. Do not write files.',inputs,opts)};
+ const reviews=await runMethod('interrogate',{task:'Review frozen exact measured candidate, no code or metric changes.',rubric:['Correct terms and API','Frozen workload and measurements','Trace/ceiling/scope honest'],evidence:[evidence]},fixed);
+ for(const report of reviews.artifacts){validateSemanticReview(report.body);if(report.role!=='lead-judgment')assert(['app.cjs','pin.cjs'].every(p=>report.actualReads?.includes(p)))}assert(reviews.verified);assert.equal(snapshot(store,work,candidate.scope).id,current.id);assert.deepEqual(protectedHashes(),before);
+ const result={passed:true,scope:'LOCAL_MEASURED_FIX_REVIEWED',priorRun:id,priorFailureRetained:true,candidate:current.id,measuredCandidate:candidate.id,before:rejected.before,after:rejected.after,delta:rejected.delta,proof,boundary,reviews,originalCalls:used,reviewCalls:3,totalCeiling:24,remeasured:false,remote:'NOT REQUESTED'};writeFileSync(join(work,'evidence.json'),JSON.stringify(result,null,2),{flag:'wx'});store.put('perf-review-continuation',id,result);console.log(JSON.stringify({passed:true,work,before:rejected.before.median,after:rejected.after.median,delta:rejected.delta,remeasured:false}));
+}catch(error){writeFileSync(join(work,'failure.json'),JSON.stringify({passed:false,reason:error instanceof Error?error.message:String(error)},null,2),{flag:'wx'});throw error}finally{provider.close();store.close();admission.release()}

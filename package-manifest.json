@@ -61,7 +61,7 @@
   },
   {
     "path": "src/coordinator.ts",
-    "sha256": "c223a5cffbe6f0675e69fee0a3eb0f0057ae710e744b8ca920fb5f263fc4bcf5"
+    "sha256": "fc04ccadc0504fa5f3675b88f6cb8f5c153c9ee7c375943a3f6d250257efef0c"
   },
   {
     "path": "src/delivery-command.ts",
@@ -129,7 +129,7 @@
   },
   {
     "path": "src/processes.ts",
-    "sha256": "4d0201290b0a621b822bffa82ef094d7c931e6dbb471705f16737a1c90770b16"
+    "sha256": "de8dc67ed671e85387b2a4e94238cabbdad212426cc1c17e897598cb3866c6a0"
   },
   {
     "path": "src/project-execution.ts",
@@ -1137,7 +1137,7 @@
   },
   {
     "path": "README.md",
-    "sha256": "1d8f5d8e68254d9017c0cbd21e24b59b641170f50d9bb45bdfbf327722f7f9ee"
+    "sha256": "e50d05eae9950a72faf65cfaed277703f3c2902af741f4566f4a421941a6e08d"
   },
   {
     "path": "compatibility.lock.json",

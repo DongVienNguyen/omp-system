@@ -7,7 +7,7 @@
   "project_root": "C:/Users/dongnv/.local/share/omp-system",
   "audit_date": "2026-10-24",
   "updated_at": "2026-10-27",
-  "pause_reason": "Final candidate b0c4ffbb2b6791ab0a0c39b031574488a2aaeea6def0ba4ff06df55ae9c0f0ed: TypeScript clean, Windows120pass527assertions51files, native lifecycle/coexistence and local delivery PASS with source/protected hashes unchanged. Frozen caps/auth precedence/fresh authoring review/standing checkpoints/perf rejection implemented. Local forge stable patch/frontier/current-head/merge-tree policy exercised through operator; independent review2e0c76201b1f4b98b06f510187ddcb2a COMPLETE actual Astra/high after one repair. Bounded authoring/browser/media runtime pass at earlier source; formal maintain semantic BLOCKED, perf frozen-noise BLOCKED. Core live deadline and comparison managed3/4 remain FAILED at30a865; no widened-budget rerun. Full specialized external/forge/controller parity and final full live release remain incomplete. Remote repo/ref/action grant and hosted ref absent. No full release/default rollout/publishing.",
+  "pause_reason": "Final source407788eadeb5b3cf295f6dff032d44659bb5de53fa844aff815f65840a3b16f4 has same-source TypeScript/Windows121pass529assertions51files/native lifecycle/coexistence/local delivery/full core900s34calls/comparison both4/4 PASS. Formal create/maintain recovered. Quiet perf measured386.5761ms to35.6632ms, all frozen gates met; original review timeout retained, exact-snapshot non-resampling continuation with regression/boundaries/fresh source-reading reviews LOCAL_MEASURED_FIX_REVIEWED,13+3calls within24. Actual GitHub PR1/CI and hosted install/load/uninstall pass at priorbc1854f; no merge/release/deploy. Final Crews independent review blocked: catalog/native policy versions mismatch, fresh MCP/native intake refused before dispatch despite reload. Do not bypass with ordinary task. Runtime synchronization/restart required; specialized full parity and independent final release acceptance not yet certified.",
   "cleanup": {"status": "DONE", "removed": [".lab", "~/.omp/profiles/omp-system-dev", "~/.omp/profiles/omp-system-install-test", "TEMP/omp-system-audit-1792854764204"], "preserved": ["source scripts", "tests", "package.json", "approved plan documents"], "automatic_resume": false},
   "resume_evidence": ["User explicitly requested resume after cleanup", "Embedded Bun1.4.3 and SDK18.12.6 installed locally with lifecycle scripts disabled", "Dedicated profile root paths verified;1065 AK instruction files snapshotted with matching hashes", "Actual SDK transport, scoped repair/tests/fresh review/certificate, and live Harness2 agg-k1 exercised", "Native Git local fixture install/list/uninstall exercised; hosted install NOT RUN", "Full F01-F12 acceptance remains incomplete; no release claim"],
   "development_isolation": {
@@ -30,13 +30,18 @@
     "repository_url": "https://github.com/DongVienNguyen/omp-system",
     "release_ref": null,
     "remote_publish_authorized": false,
+    "verification_branch": "omp-system/acceptance-20261027",
+    "verification_head": "bc1854f112ed5d7c0e717d4496dc309077cae543",
+    "pull_request": "https://github.com/DongVienNguyen/omp-system/pull/1",
+    "authorized_actions": ["minimal main bootstrap", "push acceptance branch", "draft PR", "observe CI", "hosted install-test"],
+    "forbidden_actions": ["force push", "merge", "release publish", "deploy"],
     "install_template": "omp --profile omp-system-install-test plugin install github:DongVienNguyen/omp-system#<release-ref>",
     "development_template": "omp --profile omp-system-dev plugin link <source-root>",
     "git_project_scope_supported_on_18_12_6": false,
     "manual_build_or_setup_required": false,
     "lifecycle_scripts_required": false,
     "activation_default": "off per canonical project and profile; no jobs/inference on load",
-    "state": "LOCAL Git A/B/A install and fresh native load verified; hosted NOT RUN"
+    "state": "Local Git A/B/A lifecycle and actual hosted exact-commit install/single native load/doctor/enable/disable/uninstall verified. Hosted portable-contract CI green; release_ref remains null, draft is not full release."
   },
   "additional_acceptance": [
     {"id": "A13", "requirement_ids": ["F01", "F04", "F09", "F10", "F12"], "tasks": ["T00", "T18", "T16"], "status": "LOCAL_SURROGATE_VERIFIED_NO_OS_WRITE_AUDIT", "criterion": "Isolated lab and two-session surrogate coexistence; no default/foreign mutation or process control; resource limits and no zero-impact claim"},
@@ -977,8 +982,8 @@
     {
       "id": "B03",
       "owner": "T01/T09",
-      "description": "Final b0c4ff candidate Windows120/0, TypeScript/native lifecycle/coexistence/delivery-local pass. Local forge patch/frontier policy exercised by real Git/operator regression and review2e0c76201b1f4b98b06f510187ddcb2a COMPLETE. Bounded authoring/browser/media earlier runtime proofs pass; latest formal maintain semantic-blocked and perf noise-blocked. Core live timed out; latest comparison managed3/4 baseline4/4. Full specialized external-service/forge/controller semantic parity and final live release acceptance incomplete; local supplied forge observations never authenticated remote proof.",
-      "status": "LOCAL_VERIFIED_LIVE_AND_SPECIALIZED_BLOCKED"
+      "description": "Runtime blockers recovered: final407788 same-source Windows121/0, native lifecycle/coexistence/delivery/core/comparison PASS; formal recovered; perf exact-snapshot continuation passes frozen measurement/review within24calls without resampling. Remaining: final admitted independent release review blocked by Crews policy synchronization and full specialized semantic parity reconciliation. Hosted PR/CI/install proof present, draft only.",
+      "status": "FINAL_REVIEW_RUNTIME_SYNC_REQUIRED"
     },
     {
       "id": "B04",
@@ -989,8 +994,8 @@
     {
       "id": "B05",
       "owner": "T15/T16",
-      "description": "Remote repository credentials and action authority not granted",
-      "status": "OPEN"
+      "description": "Operator granted new acceptance branch/draft PR/CI and minimal main bootstrap, authenticated GitHub using lab portable gh plus OS keyring. PR1 and actual exact-head CI pass. Merge/release/deploy remain unauthorized, not inferred from repo access.",
+      "status": "RESOLVED_SCOPED_REMOTE_VERIFICATION"
     },
     {
       "id": "B06",
@@ -1001,13 +1006,14 @@
     {
       "id": "B07",
       "owner": "T16",
-      "description": "Latest four-task comparison at30a865: baseline4/4 managed3/4; managed harness reviewer timed out and no integration certificate issued.12worker calls, no automatic recovery budget increase. Prior a8cf95 both4/4 managed slower remains historical. No general throughput/quality/cost advantage claimed.",
-      "status": "LATEST_COMPARISON_FAILED"
+      "description": "Recovery comparison37900a54 both4/4,12worker calls,234632ms under original deadlines/count/token caps after correcting theoretical retry time division and misleading fallback-source labeling. Earlier failed runs retained. No general throughput/quality/cost advantage claimed.",
+      "status": "RECOVERY_LOCAL_VERIFIED_BOUNDED"
     }
     ,{"id": "B08", "owner": "T00/T18/T16", "description": "Owned simultaneous native sessions survived lifecycle/cancel; protected hashes stable. Native Unicode/privacy/populatedSQLite retention and explicit resource/rate429 launch stops proven; no OS-wide write audit/zero-impact guarantee", "status": "LOCAL_SCOPED_VERIFIED"},
-    {"id": "B09", "owner": "T17/T16", "description": "Local native Git A/B/A install/load/uninstall proven; hosted release ref/publish authority missing", "status": "PARTIAL"},
+    {"id": "B09", "owner": "T17/T16", "description": "Actual hosted GitHub exact commit bc1854f install/load/doctor/enable/disable/uninstall verified,287assets single extension, no inference. Draft PR1 and portable-contracts CI green; release_ref null and merge/release/deploy unauthorized.", "status": "HOSTED_VERIFIED_DRAFT_ONLY"},
     {"id": "B10", "owner": "T00/T01", "description": "Historical disk shortage cleared before resumed implementation; preflight enforces 2GiB headroom before allocation", "status": "RESOLVED"}
     ,{"id":"B11","owner":"T09/T16","description":"Original wake run95bba6bed3fd4974a392e093a9606d81 remains historical FAILED; explicit user-authorized recovery4d5c2c018aa743e6b546b161f8e811e9 COMPLETE at exact corrected snapshot, actual Astra/high","status":"RESOLVED_BY_AUTHORIZED_RECOVERY"}
+    ,{"id":"B12","owner":"T09/T16","description":"Fresh Crews plans and canonical native intake refuse Routing policy changed before dispatch. Catalog/native policy versions disagree despite identical Combo binding; reload unchanged. No ordinary-task bypass. Requires runtime policy synchronization/restart before independent final continuation/release verdict.","status":"RUNTIME_SYNC_REQUIRED"}
   ],
   "audit_verification": {
     "E01": "LOCAL_VERIFIED",
