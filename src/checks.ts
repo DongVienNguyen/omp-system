@@ -17,6 +17,7 @@ export async function executeCheck(store:Store,command:Command,identity:{candida
  const report=runner==='bun-test'?join(store.directory,'test-report-'+randomUUID()+'.xml'):undefined;
  const args=report?[...command.args,'--reporter=junit','--reporter-outfile='+report]:command.args;
  const result=await supervised(command.executable,args,{cwd:command.cwd,timeoutMs:command.timeoutMs,signal,env:{PATH:process.env.PATH,SystemRoot:process.env.SystemRoot,COMSPEC:process.env.COMSPEC,TEMP:process.env.TEMP,TMP:process.env.TMP,BUN_BE_BUN:'1',GIT_TERMINAL_PROMPT:'0'}});
+ store.put('check-process',identity.candidate+':'+command.id,{status:result.status,exitCode:result.exitCode,pid:result.pid,timing:result.timing,timeoutMs:command.timeoutMs});
  const output=result.stdout+result.stderr,truncated=result.truncated,exit=result.exitCode;
  let selected:number|null=null,failures:number|null=null;
  if(report&&existsSync(report)){const xml=readFileSync(report,'utf8');const total=xml.match(/<testsuites\b[^>]*\btests="(\d+)"/);const failed=xml.match(/<testsuites\b[^>]*\bfailures="(\d+)"/);selected=total?Number(total[1]):null;failures=failed?Number(failed[1]):null;store.artifact(xml);unlinkSync(report)}
