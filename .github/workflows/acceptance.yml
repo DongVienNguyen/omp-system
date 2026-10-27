@@ -19,5 +19,8 @@ jobs:
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Typecheck
         run: bun node_modules/typescript/bin/tsc --noEmit
+      - name: Create isolated fixture parent
+        shell: pwsh
+        run: New-Item -ItemType Directory -Path .lab -Force
       - name: Portable behavior and gate contracts
         run: bun test tests/runtime.test.ts tests/effort-recovery.test.ts tests/token-limits.test.ts tests/state-gate.test.ts tests/gate-provenance.test.ts tests/budget.test.ts tests/model-budget.test.ts tests/authority.test.ts tests/run-spec.test.ts tests/workflow-verification.test.ts src/harness/method.test.ts
