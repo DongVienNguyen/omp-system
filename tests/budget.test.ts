@@ -1,0 +1,6 @@
+import { test,expect } from 'bun:test';
+import { mkdtempSync,rmSync } from 'node:fs';
+import { join } from 'node:path';
+import { Store } from '../src/state';
+import { BudgetController } from '../src/budget';
+test('atomic reservations bind exact profile and count all calls before allocation',()=>{const dir=mkdtempSync(join(import.meta.dir,'../.lab/budget-'));const s=new Store(dir);try{s.createRun('r',[],{});const b=new BudgetController(s,'r',{concurrency:1,max_worker_calls:2,max_rollouts:0,max_stages:0,max_transport_retries:0,max_repairs:0,deadline:Date.now()+60000,max_output_tokens:16384,max_input_bytes:1048576,max_output_bytes:262144});const a=b.reserve('a','worker','easy');expect([a.model,a.effort]).toEqual(['code-seek','high']);expect(()=>b.reserve('b','worker','hard')).toThrow('Concurrency');b.settle('a','success',{});const h=b.reserve('b','worker','hard');expect([h.model,h.effort]).toEqual(['code-astra','low']);b.settle('b','failed',{});expect(()=>b.reserve('c','worker','medium')).toThrow('Budget exhausted');expect(()=>b.reserve('retry','retry','medium')).toThrow('Budget exhausted');expect(()=>b.reserve('a','worker','medium')).toThrow('Duplicate');s.put('run','r',{...s.get<any>('run','r'),cancelled:true});expect(()=>b.reserve('d','worker','medium')).toThrow('cancelled')}finally{s.close();rmSync(dir,{recursive:true,force:true})}});

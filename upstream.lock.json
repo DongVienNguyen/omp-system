@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "sources": {
+    "can1357/oh-my-pi": {
+      "sha": "45c35e40c46166dc726ccc52f5d27f40f2449f99",
+      "ref": "v18.12.6",
+      "license": "MIT",
+      "comparison_only": {
+        "head_sha": "0b5c27ab24719c86a5986b95ee55f4e75bc1aaa0",
+        "scope": "Six inspected API docs/types files byte-equal; not whole-repository compatibility"
+      }
+    },
+    "kunchenguid/firstmate": {
+      "sha": "d96bff00dc51369af820f952fd092ad2e45f9f2b",
+      "branch": "main",
+      "license": "MIT"
+    },
+    "EvanBatten/firstmate-for-windows": {
+      "sha": "40d922813c7d0d0c38296d00204505149320bae3",
+      "branch": "main",
+      "license": "MIT"
+    },
+    "kunchenguid/no-mistakes": {
+      "sha": "b529e952605f3f8ec5e1c306ca94459b7727d0c0",
+      "branch": "main",
+      "license": "MIT"
+    },
+    "google-research/harness2": {
+      "sha": "1cfe254e8d25b15f37048c3730134686abe60335",
+      "branch": "main",
+      "license": "Apache-2.0"
+    },
+    "cursor/plugins": {
+      "sha": "9580c23696ac8d7abed0c166f2f9918800afb819",
+      "license": "MIT"
+    },
+    "shrimpwtf/oh-my-pstack": {
+      "sha": "fc0eabd25f21b194a336b640e75e29c252382866",
+      "license": "MIT"
+    },
+    "Jrecos/omp-pstack": {
+      "sha": "824bbacb0ae28b1885ebcb912f0b8d984bb49198",
+      "license": "MIT"
+    }
+  },
+  "notices": [
+    {
+      "repository": "can1357/oh-my-pi",
+      "revision": "45c35e40c46166dc726ccc52f5d27f40f2449f99",
+      "license": "MIT",
+      "licenseFile": "vendor/licenses/omp.txt"
+    },
+    {
+      "repository": "google-research/harness2",
+      "revision": "1cfe254e8d25b15f37048c3730134686abe60335",
+      "license": "Apache-2.0",
+      "licenseFile": "vendor/licenses/harness2.txt"
+    }
+  ]
+}

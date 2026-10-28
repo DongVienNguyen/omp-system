@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import {createServer} from 'node:http';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {join} from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {runVisualParity} from '../src/visual-parity';
+import {Store} from '../src/state';
+import {root,protectedHashes} from './dev-preflight';
+import {admitResources} from '../src/resource-admission';
+import {spawn} from 'node:child_process';
+import {digest} from '../src/contracts';
+import {sealEvidence} from '../src/evidence';
+import {childEnvironment,profileRoot} from './dev-preflight';
+const browserExecutable=process.argv[2];if(!browserExecutable)throw Error('Explicit installed browser executable required');
+const admission=await admitResources(root,true);let store:Store|undefined;let server:ReturnType<typeof createServer>|undefined;
+try{
+const id='visual-'+randomUUID(),project=join(root,'.lab','workspaces',id),before=protectedHashes();mkdirSync(project,{recursive:true});store=new Store(join(profileRoot('omp-system-dev'),'agent','omp-system',digest(project)));let color='rgb(20, 40, 60)';
+server=createServer((_req,res)=>{res.setHeader('Content-Type','text/html');res.end('<!doctype html><html><body style="margin:0"><div id="card" style="width:120px;height:60px;background:'+color+'"></div></body></html>')});
+ await new Promise<void>(resolve=>server!.listen(0,'127.0.0.1',resolve));const address=server.address();if(!address||typeof address==='string')throw Error('Server address missing');
+ writeFileSync(join(project,'harness.json'),JSON.stringify({components:[{name:'card-default',selector:'#card'}],viewport:{width:320,height:200,deviceScaleFactor:1}}));
+ const spec={action:'visual-baseline',id:id+'-baseline',project,baseline:id,browserExecutable,url:'http://127.0.0.1:'+address.port,viewport:{width:320,height:200,deviceScaleFactor:1},components:[{name:'card-default',selector:'#card'}],harness:['harness.json'],deadline:Date.now()+30000};
+ const baseline=await runVisualParity(spec,store,project);assert.equal(baseline.status,'BASELINE_CAPTURED');
+ await assert.rejects(runVisualParity({...spec,id:id+'-replace'},store,project),/immutable/);
+ const identical=await runVisualParity({...spec,action:'visual-compare',id:id+'-same',deadline:Date.now()+30000},store,project);assert.equal(identical.status,'PIXEL_IDENTICAL');assert.equal(identical.components[0]!.differentPixels,0);
+ color='rgb(21, 40, 60)';const different=await runVisualParity({...spec,action:'visual-compare',id:id+'-different',deadline:Date.now()+30000},store,project);assert.equal(different.status,'PIXEL_DIFFERENT');assert.equal(different.components[0]!.differentPixels,7200);assert.equal(different.verified,false);
+ const nativeSpec={...spec,action:'visual-compare',id:id+'-native-denial',deadline:Date.now()+30000},file=join(project,'native-request.json'),authority={id:randomUUID(),action:'catalog-operator',project,specDigest:digest(nativeSpec),expires:nativeSpec.deadline};writeFileSync(file,JSON.stringify(nativeSpec));sealEvidence(store,'authority',authority.id,authority);
+ const env:NodeJS.ProcessEnv={...childEnvironment('omp-system-dev'),BUN_BE_BUN:'1'};delete env.OMP_SYSTEM_API_KEY;
+ const child=spawn(process.execPath,[join(root,'src','catalog-operator-cli.ts'),file,authority.id,project],{cwd:project,env,stdio:['ignore','pipe','pipe']});let output='',errors='';child.stdout.on('data',b=>output+=b);child.stderr.on('data',b=>errors+=b);const timer=setTimeout(()=>child.kill(),35000);const exit=await new Promise<number|null>((resolve,reject)=>{child.once('close',resolve);child.once('error',reject)}).finally(()=>clearTimeout(timer));assert.equal(exit,1,errors);assert.equal(JSON.parse(output).status,'PIXEL_DIFFERENT');
+ writeFileSync(join(project,'harness.json'),'changed');await assert.rejects(runVisualParity({...spec,action:'visual-compare',id:id+'-tampered',deadline:Date.now()+30000},store,project),/harness differs/);
+ const sealed=store.get<{body:unknown;signature:string}>('sealed-check','visual-baseline:'+id)!;store.put('sealed-check','visual-baseline:'+id,{...sealed,signature:'0'.repeat(64)});await assert.rejects(runVisualParity({...spec,action:'visual-compare',id:id+'-forged',deadline:Date.now()+30000},store,project),/Forged/);
+ assert.deepEqual(protectedHashes(),before);const evidence={passed:true,project,baseline,identical,different,harnessTamperingRejected:true,protectedConfigUnchanged:true};writeFileSync(join(project,'evidence.json'),JSON.stringify(evidence,null,2));console.log(JSON.stringify({passed:true,project,unchangedPixels:identical.components[0]!.differentPixels,changedPixels:different.components[0]!.differentPixels,harnessTamperingRejected:true,protectedConfigUnchanged:true}));
+}finally{if(server)await new Promise<void>(resolve=>server!.close(()=>resolve()));store?.close();admission.release()}

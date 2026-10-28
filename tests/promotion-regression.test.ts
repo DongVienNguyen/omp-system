@@ -1,0 +1,62 @@
+import {test,expect} from 'bun:test';
+import {mkdtempSync,mkdirSync,writeFileSync,rmSync} from 'node:fs';
+import {join} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {Store} from '../src/state';
+import {digest,type Command,type Check} from '../src/contracts';
+import {snapshot,type Snapshot} from '../src/workspaces';
+import {executeCheck} from '../src/checks';
+import {commandIdentity} from '../src/command-identity';
+import {certify} from '../src/gate';
+import {sealEvidence,evidenceId} from '../src/evidence';
+import {approvePromotion,freezeRegression,executeFrozenRegression,promote,rollbackPromotion,type FrozenRegressionProof} from '../src/promotion';
+import {supervised} from '../src/processes';
+import {executePromotionCommand} from '../src/promotion-command';
+type SealedManifest={body:{requiredChecks:{id:string}[];commands:Command[];suiteSnapshot:Snapshot};signature:string};
+type SealedCheck={body:Check & {commandDigest:string};signature:string};
+
+test('host-frozen actual Bun suite blocks visible-only winner; good candidate activates and rollback restores observable behavior',async()=>{
+ const dir=mkdtempSync(join(import.meta.dir,'../.lab/frozen-regression-')),s=new Store(join(dir,'state')),project=join(dir,'project');mkdirSync(project);
+ try{
+  const baselineRoot=join(dir,'baseline');mkdirSync(baselineRoot);writeFileSync(join(baselineRoot,'app.ts'),'export const value=(n:number)=>n<0?7:42;');
+  const base=snapshot(s,baselineRoot,['app.ts']).id,policy=digest('host-policy'),plan=digest('visible-plan');
+  const prepare=async(name:string,source:string)=>{
+   const root=join(dir,name),suite=join(dir,name+'-host-suite');mkdirSync(root);mkdirSync(suite);writeFileSync(join(root,'app.ts'),source);
+   const candidate=snapshot(s,root,['app.ts']).id,app=JSON.stringify(pathToFileURL(join(root,'app.ts')).href);
+   writeFileSync(join(suite,'visible.test.ts'),`import {test,expect} from 'bun:test';import {value} from ${app};test('visible',()=>expect(value(1)).toBe(42));`);
+   writeFileSync(join(suite,'hidden.test.ts'),`import {test,expect} from 'bun:test';import {value} from ${app};test('hidden frozen negative input',()=>expect(value(-1)).toBe(8));`);
+   const command=(id:string,file:string):Command=>({id,executable:process.execPath,args:['test','./'+file],cwd:suite,timeoutMs:15000,testCount:1});
+   const visibleCommand=command('visible-certificate','visible.test.ts');
+   const visible=await executeCheck(s,visibleCommand,{candidate,policy,plan},{trustedCode:true,root:dir});expect(visible.status).toBe('passed');
+   const review={id:'review-'+name,candidate,base,policy,plan,session:'independent-reviewer',implementerSession:'candidate-author',status:'complete' as const,reviewed_paths:['app.ts'],findings:[]};sealEvidence(s,'review',review.id,review);
+   const certificate=certify(s,{candidate,base,policy,plan,requiredChecks:[{id:visible.id,commandDigest:commandIdentity(visibleCommand),requiresObservation:true}],paths:['app.ts'],checks:[visible],review,pendingJobs:0,currentCandidate:()=>snapshot(s,root,['app.ts']).id});
+   const commands=[command('regression-visible','visible.test.ts'),command('regression-hidden','hidden.test.ts')],input={project,experiment:name,candidate,base,policy,plan,suite:{root:suite,paths:['visible.test.ts','hidden.test.ts']},commands};
+   expect(()=>freezeRegression(s,input,false)).toThrow('operator approval');
+   const frozen=freezeRegression(s,input,true),proof=await executeFrozenRegression(s,frozen.digest,{trustedCode:true,root:dir});
+   s.put('regression',name,{candidate,regressionDigest:frozen.digest});
+   const authority=approvePromotion(s,{action:'promote',project,candidate,expires:Date.now()+60000},true);
+   return {root,suite,commands,request:{project,experiment:name,candidate,base,policy,plan,certificate:certificate.id,authority:authority.id,frozenRegression:proof,expectedActive:base}};
+  };
+  const bad=await prepare('visible-winner','export const value=(_n:number)=>42;');
+  expect(s.get<Check>('check',evidenceId(bad.request.candidate,'regression:'+bad.request.frozenRegression.digest+':regression-visible'))!.status).toBe('passed');
+  expect(s.get<Check>('check',evidenceId(bad.request.candidate,'regression:'+bad.request.frozenRegression.digest+':regression-hidden'))!.status).toBe('failed');
+  expect(()=>promote(s,{...bad.request,frozenRegression:{...bad.request.frozenRegression,evidence:['regression-visible']}})).toThrow('required suite coverage');
+  const selfAsserted:FrozenRegressionProof & {passed:boolean}={...bad.request.frozenRegression,passed:true};expect(()=>promote(s,{...bad.request,frozenRegression:selfAsserted})).toThrow('not bound/passed');
+  expect(s.get('policy',project)).toBeUndefined();
+  const good=await prepare('good','export const value=(n:number)=>n<0?8:42;'),r=good.request;
+  expect(()=>promote(s,{...r,authority:'candidate-invented'})).toThrow('Unattested');
+  for(const change of [{policy:digest('changed')},{candidate:bad.request.candidate},{base:digest('changed-base')},{plan:digest('changed-plan')},{experiment:'other-experiment'},{project:'other-project'}])expect(()=>promote(s,{...r,...change})).toThrow();
+  expect(()=>promote(s,{...r,frozenRegression:{...r.frozenRegression,evidence:['regression-visible','regression-visible']}})).toThrow('required suite coverage');
+  const manifestKey='frozen-regression:'+r.frozenRegression.digest,record=s.get<SealedManifest>('sealed-authority',manifestKey)!;
+  s.put('sealed-authority',manifestKey,{...record,body:{...record.body,requiredChecks:record.body.requiredChecks.slice(0,1)}});expect(()=>promote(s,r)).toThrow('Forged');s.put('sealed-authority',manifestKey,record);
+  sealEvidence(s,'authority',manifestKey,{...record.body,commands:record.body.commands.slice(0,1)});expect(()=>promote(s,r)).toThrow('manifest mismatch');s.put('sealed-authority',manifestKey,record);
+  const checkKey=evidenceId(r.candidate,'regression:'+r.frozenRegression.digest+':regression-hidden'),check=s.get<SealedCheck>('sealed-check',checkKey)!;sealEvidence(s,'check',checkKey,{...check.body,commandDigest:digest('different command')});expect(()=>promote(s,r)).toThrow('not bound/passed');s.put('sealed-check',checkKey,check);
+  sealEvidence(s,'check',checkKey,{...check.body,selectedTests:2});expect(()=>promote(s,r)).toThrow('not bound/passed');s.put('sealed-check',checkKey,check);
+  const hidden=join(good.suite,'hidden.test.ts'),originalHidden=s.readArtifact(record.body.suiteSnapshot.files.find(f=>f.path==='hidden.test.ts')!.artifact);
+  writeFileSync(hidden,'import {test} from "bun:test";test("forged pass",()=>{});');expect(()=>promote(s,r)).toThrow('suite mutated');writeFileSync(hidden,originalHidden);
+  const app=join(good.root,'app.ts'),originalApp='export const value=(n:number)=>n<0?8:42;';writeFileSync(app,'export const value=()=>42;');expect(()=>promote(s,r)).toThrow('candidate mutated');writeFileSync(app,originalApp);
+  const observe=async()=>{const active=s.get<{candidate:string}>('policy',project)?.candidate??base,snap=s.get<Snapshot>('snapshot',active)!;const result=await supervised(process.execPath,['-e',`import {value} from ${JSON.stringify(pathToFileURL(join(snap.root,'app.ts')).href)};console.log(value(-1));`],{cwd:dir,env:{...process.env,BUN_BE_BUN:'1'},timeoutMs:15000});expect(result.exitCode).toBe(0);return result.stdout.trim()};
+  expect(await observe()).toBe('7');expect(promote(s,r).candidate).toBe(r.candidate);expect(await observe()).toBe('8');
+  await executePromotionCommand(s,project,{op:'rollback',project,expectedActive:r.candidate},true);expect(s.get<{candidate:string}>('policy',project)?.candidate).toBe(base);expect(await observe()).toBe('7');
+ }finally{s.close();rmSync(dir,{recursive:true,force:true})}
+},120000);

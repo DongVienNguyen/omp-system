@@ -1,0 +1,49 @@
+---
+name: omp-create-skill
+description: Native OMP skill-authoring guide. Write, validate, and test a SKILL.md that OMP discovers and triggers reliably. Use when creating or reviewing any skill, including agent-facing skills this package loads.
+---
+
+# Authoring a native OMP skill
+
+## Shape
+
+1. One directory per skill, one level below its selected skill root: `<skill-root>/<skill-name>/SKILL.md`. Keep references, scripts, and assets inside the skill directory. Nested skill directories are not discovered.
+2. Frontmatter requires exactly what discovery requires:
+   - `name`: lowercase-hyphenated, matching the directory name. OMP addresses skills as `skill:<name>`; a display-name heading inside the body can stay friendlier.
+   - `description`: the trigger surface. State what the skill does and the concrete requests that should load it. This text is what the model matches against; a vague description means the skill never fires.
+   - `disable-model-invocation: true` when only a slash command or an explicit reference should load it. Keep behavior explicit either way.
+3. Assets and references are relative paths inside the skill directory (`../references/x.md`, `scripts/run.sh`). Never absolute paths, never `~`, never another package's tree.
+4. The body is instructions for an agent, not prose for a human. Every sentence either changes what the agent does or goes.
+
+## Placement
+
+Package-owned skills use the package's `skills/` root. For a project-local skill, follow an existing `.agents/skills/` or `.omp/skills/` convention.
+
+- If exactly one project root exists, use it.
+- If neither exists, ask one structured question before creating files:
+  - `.agents/skills/` is the recommended choice for a portable Agent Skills layout.
+  - `.omp/skills/` is the OMP-specific choice.
+- If both exist, place the skill beside related skills. If the repository has no clear convention for the new skill, ask the same question.
+- Use the active profile's `skills/` root only when the user asks for a personal skill that follows them across projects.
+
+OMP discovers `.agents/skills/` and `.omp/skills/` by default. P Stack receives that same skill catalog. Do not change P Stack configuration or `skills.customDirectories` for either root. Create the selected root, then use a fresh OMP session for the real invocation check.
+
+## Triggers
+
+- Write the description from real request phrasing: the words a user types, not the vocabulary of the implementation.
+- Name the disambiguation when a host built-in or sibling skill matches the same words, so the router picks deliberately.
+- One skill, one trigger cluster. Two unrelated jobs get two skills.
+
+## Validation
+
+Before declaring the skill done:
+
+1. Frontmatter has `name` and `description`, and the name matches the directory.
+2. Every referenced file exists at the stated relative path; every cross-skill link resolves to a real skill.
+3. Scripts it names are executable and their arguments match the text.
+4. **Real invocation check.** Load the skill in an actual OMP session (a temporary profile with this package installed is enough) and confirm both that discovery lists it and that invoking it produces the intended behavior on a concrete task.
+5. If the skill ships executable steps, run them once on a throwaway fixture and keep the output as the evidence.
+
+## Review bar
+
+When in doubt, delete; prose earns its keep by changing a decision. Tell it to do the thing and skip the reason. Explain only when the rule is confusing without one. Match tone to scope. Point at structural sources (types, READMEs, config); hardcoded details go stale. Delegate to other skills by path; don't restate.

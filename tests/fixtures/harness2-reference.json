@@ -1,0 +1,127 @@
+{
+  "source": "google-research/harness2",
+  "revision": "1cfe254e8d25b15f37048c3730134686abe60335",
+  "scope": "Unmodified run_parallel/run_sequential scheduling functions; deterministic numeric stage/rollout substrate, not provider/channel parity",
+  "cases": [
+    {
+      "mode": "agg",
+      "k": 1,
+      "stages": [
+        "inv1",
+        "dom1",
+        "agg1"
+      ],
+      "finals": [
+        "agg1"
+      ],
+      "biases": [
+        12
+      ],
+      "trace": [
+        "rollout:base1",
+        "session:inv1",
+        "session:dom1",
+        "rollout:inv1",
+        "rollout:dom1",
+        "session:agg1",
+        "rollout:agg1"
+      ]
+    },
+    {
+      "mode": "agg",
+      "k": 2,
+      "stages": [
+        "inv1",
+        "dom1",
+        "inv2",
+        "dom2",
+        "agg1",
+        "agg2"
+      ],
+      "finals": [
+        "agg1",
+        "agg2"
+      ],
+      "biases": [
+        34,
+        35
+      ],
+      "trace": [
+        "rollout:base1",
+        "rollout:base2",
+        "session:inv1",
+        "session:dom1",
+        "session:inv2",
+        "session:dom2",
+        "rollout:inv1",
+        "rollout:dom1",
+        "rollout:inv2",
+        "rollout:dom2",
+        "session:agg1",
+        "session:agg2",
+        "rollout:agg1",
+        "rollout:agg2"
+      ]
+    },
+    {
+      "mode": "seq",
+      "k": 1,
+      "stages": [
+        "inv1",
+        "dom1",
+        "c1"
+      ],
+      "finals": [
+        "c1"
+      ],
+      "biases": [
+        12
+      ],
+      "trace": [
+        "rollout:base1",
+        "session:inv1",
+        "session:dom1",
+        "rollout:inv1",
+        "rollout:dom1",
+        "session:c1",
+        "rollout:c1"
+      ]
+    },
+    {
+      "mode": "seq",
+      "k": 2,
+      "stages": [
+        "inv1",
+        "dom1",
+        "c1",
+        "inv2",
+        "dom2",
+        "c2"
+      ],
+      "finals": [
+        "c1",
+        "c2"
+      ],
+      "biases": [
+        12,
+        48
+      ],
+      "trace": [
+        "rollout:base1",
+        "rollout:base2",
+        "session:inv1",
+        "session:dom1",
+        "rollout:inv1",
+        "rollout:dom1",
+        "session:c1",
+        "rollout:c1",
+        "session:inv2",
+        "session:dom2",
+        "rollout:inv2",
+        "rollout:dom2",
+        "session:c2",
+        "rollout:c2"
+      ]
+    }
+  ]
+}

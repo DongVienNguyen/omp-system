@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {validateFormalRequest} from '../src/formal-verification';
+import {validateVideoRequest} from '../src/media-video';
+const project=import.meta.dir,sha256='a'.repeat(64),tool={path:process.execPath,sha256};
+const formal={action:'formal-check',id:'bounded',project,java:tool,tlc:tool,model:'model.tla',config:'model.cfg',inputs:['model.tla','model.cfg','broken.tla','app.ts'].map(path=>({path,sha256})),properties:['Bound'],sourceMap:[{modelSymbol:'Next',symbol:'maySend',path:'app.ts',line:1}],negative:[{model:'broken.tla',config:'model.cfg',property:'Bound'}],deadline:Date.now()+30000};
+assert.equal(validateFormalRequest(formal,project).negative[0]!.property,'Bound');
+assert.throws(()=>validateFormalRequest({...formal,negative:[]},project),/falsification/);
+assert.throws(()=>validateFormalRequest({...formal,properties:['Bound','Lost']},project),/Every property/);
+assert.throws(()=>validateFormalRequest({...formal,sourceMap:[{modelSymbol:'Next',symbol:'maySend',path:'outside.ts',line:1}]},project),/mapping/);
+const slide={image:'observed.png',sha256,seconds:3,addedWords:8,claim:'Actual evidence',evidence:'evidence.json',evidenceSha256:sha256},video={action:'evidence-video',id:'video',project,ffmpeg:tool,ffprobe:tool,slides:[slide],width:640,height:360,fps:24,deadline:Date.now()+30000};
+assert.equal(validateVideoRequest(video,project).slides[0]!.seconds,3);
+assert.throws(()=>validateVideoRequest({...video,slides:[{...slide,seconds:2}]},project),/readable/);
+assert.throws(()=>validateVideoRequest({...video,slides:[{...slide,evidenceSha256:undefined}]},project),/pinned/);
+assert.throws(()=>validateVideoRequest({...video,slides:[{...slide,image:'../escape.png'}]},project),/Unsafe/);
+assert.throws(()=>validateVideoRequest({...video,slides:Array.from({length:6},()=>({...slide,seconds:30,addedWords:0}))},project),/180s/);
+assert.throws(()=>validateVideoRequest({...video,width:360,height:640},project),/landscape/);
+console.log('formal-media: per-property falsification, source pin, evidence digest, readable hold, landscape, full duration and scope boundaries PASS');
