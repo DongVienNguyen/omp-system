@@ -164,7 +164,7 @@
       "id": "F11",
       "title": "Local/remote delivery",
       "acceptance_id": "A11",
-      "status": "LOCAL_VERIFIED_CURRENT_REMOTE_PENDING"
+      "status": "LOCAL_AND_AUTHORIZED_DRAFT_REMOTE_VERIFIED"
     },
     {
       "id": "F12",
