@@ -139,6 +139,12 @@ Original local acceptance is complete, not a production rollout. Evidence: `fina
 Independent static review102837 repaired directory-scope staging defect and returned COMPLETE. Separate reviewe190462 confirmed numbered fresh-read bytes and formal resource custody. Renderer dependency closure and retarget destination-base defects repaired and tested. Global runtime changed externally to18.13.x; exact official18.12.6 restored only inside `.lab/toolchains/omp18.12.6` with SHA25673d73c11dc8821cf939441a964992aefc9c5b0d5a4418e9e8985a46439b60eef. No global runtime/config changed by this recovery.
 Current hosted verification is draft-only. Production/default-profile rollout, merge, release publication and deployment are not performed. Pricing remains UNKNOWN; CPU/RAM/API resource impact is shared, not zero. Catalog inventory retains explicit unsupported external/controller capabilities without presenting source guidance as runtime parity.
 
+Final draft delivery: runtime commit `d1acaa9e6fbdf14db49d1ad1eb1c4cfd4f15a297` on [PR1](https://github.com/DongVienNguyen/omp-system/pull/1). Exact-head CI passed [push run40661473365](https://github.com/DongVienNguyen/omp-system/actions/runs/40661473365) and [PR run40661483461](https://github.com/DongVienNguyen/omp-system/actions/runs/40661483461). Native `github:DongVienNguyen/omp-system#d1acaa9e6fbdf14db49d1ad1eb1c4cfd4f15a297` install, manifest verification, load-once, doctor, enable/disable and uninstall passed without inference; evidence `.lab/workspaces/hosted-final-ff137ef4-572b-4bb0-be1a-fa107e222e42/evidence.json`. Install-test registration removed; retained state untouched. Subsequent ledger-only commit does not change accepted runtime source.
+
+Final package retention: exactly two latest verified local lifecycle copies remain, `gói cài đặt 漢字 UPIBtK` and `gói cài đặt 漢字 NsMeEG`. Five older unregistered copies removed after both lab native inventories were empty, reclaiming100077101 logical bytes. Source/state/private evidence/toolchains and global profiles retained. This supersedes earlier intermediate latest-two lists.
+
+
+
 
 ### Deterministic gate challenge suite
 
@@ -273,4 +279,4 @@ Acceptance runner independent of certifier oracle: seed known failures and inspe
 
 ## Current known limits
 
-Only original model transport CLI smoke/baseline fingerprints and current source/API/help inspection proved. Per-spawn hook routing, reviewer/OS sandbox, pstack Windows runtime, all8 Harness² surfaces, process/cancel/resume, comparative gains, native Git install, profile isolation/coexistence and remote delivery NOT RUN. B01–B09 are OPEN. User review required before T00, not T01, starts. CPU/RAM/network/API contention cannot be guaranteed zero on same machine/account.
+Supported scope is original F01–F12 functional system with exact-reviewed trusted executable code and explicit catalog capability dispositions. No hostile-code OS isolation, universal upstream/external-service parity, verified pricing or zero shared-resource impact is claimed. Native managed workers use fixed Seek/high, Sol/high, Astra/low; Crews reviewers use current configurable Combo policy. Default-profile rollout, merge, release publication and deployment are outside completed draft delivery.

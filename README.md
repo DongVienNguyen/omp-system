@@ -4,7 +4,7 @@ OMP-native project orchestration with isolated worker sessions, digest-bound evi
 
 ## Status
 
-Original F01–F12 local functional acceptance completed on source `dd984ce1136c21f1d1acccc511f23b1f5fabc1978fd799ffdede66ae7248940b`: 24 runtime scenarios, 127 tests, 615 assertions, native Git lifecycle/coexistence, independent static safety reviews and exact-evidence performance review. Current draft-head hosted verification is separate. Supported executable mode is exact-reviewed trusted code, not an OS sandbox. Catalog inventory explicitly distinguishes bounded adapters from unavailable external capabilities; no universal upstream parity claim. No production/default-profile rollout, merge, release publication or deployment performed. Evidence and limits: `docs/omp-system/2026-10-24/OMP_ACCEPTANCE_AND_OPERATIONS.md`.
+Original F01–F12 functional plan and authorized draft delivery completed: source `dd984ce1136c21f1d1acccc511f23b1f5fabc1978fd799ffdede66ae7248940b` passed24runtime scenarios,127tests/615assertions, native lifecycle/coexistence and independent reviews. Runtime commit `d1acaa9e6fbdf14db49d1ad1eb1c4cfd4f15a297` passed hosted CI plus exact-commit native install/load/uninstall. Supported executable mode is exact-reviewed trusted code, not an OS sandbox. Catalog inventory explicitly distinguishes bounded adapters from unavailable external capabilities; no universal upstream parity claim. No production/default-profile rollout, merge, release publication or deployment performed. Evidence and limits: `docs/omp-system/2026-10-24/OMP_ACCEPTANCE_AND_OPERATIONS.md`.
 
 ## Requirements
 

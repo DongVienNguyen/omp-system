@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "LOCAL_ACCEPTANCE_COMPLETE_REMOTE_DRAFT_VERIFICATION",
+  "status": "COMPLETE_VERIFIED_DRAFT_DELIVERY",
   "execution_authorized": true,
   "implementation_started": true,
   "release_scope": "Single complete F01-F12 release; milestones are not narrower releases",
@@ -8,7 +8,7 @@
   "audit_date": "2026-10-24",
   "updated_at": "2026-10-28",
   "pause_reason": null,
-  "completion_evidence": {"candidate":"dd984ce1136c21f1d1acccc511f23b1f5fabc1978fd799ffdede66ae7248940b","summary":".lab/evidence/final-acceptance-summary-20261028.json","passed_runtime_cases":24,"windows":{"pass":127,"fail":0,"assertions":615,"files":56},"independent_reviews":["102837f324f8480394505fd52ad16e1f","e190462fd97749ac8cca41710553d6d2"],"scope":"Original F01-F12 functional acceptance in exact-approved trusted-code mode; not arbitrary-code OS isolation or universal upstream capability parity","historical_failed_runs":"PRESERVED","remote":"Current draft-head CI/install verification pending"},
+  "completion_evidence": {"candidate":"dd984ce1136c21f1d1acccc511f23b1f5fabc1978fd799ffdede66ae7248940b","summary":".lab/evidence/final-acceptance-summary-20261028.json","passed_runtime_cases":24,"windows":{"pass":127,"fail":0,"assertions":615,"files":56},"independent_reviews":["102837f324f8480394505fd52ad16e1f","e190462fd97749ac8cca41710553d6d2"],"scope":"Original F01-F12 functional acceptance in exact-approved trusted-code mode; explicit catalog capability limits retained","historical_failed_runs":"PRESERVED","remote":{"verified_runtime_commit":"d1acaa9e6fbdf14db49d1ad1eb1c4cfd4f15a297","ci_runs":[40661473365,40661483461],"native_install_evidence":".lab/workspaces/hosted-final-ff137ef4-572b-4bb0-be1a-fa107e222e42/evidence.json","state":"DRAFT_ONLY_NO_MERGE_OR_DEPLOY"}},
   "cleanup": {"status": "DONE", "removed": [".lab", "~/.omp/profiles/omp-system-dev", "~/.omp/profiles/omp-system-install-test", "TEMP/omp-system-audit-1792854764204"], "preserved": ["source scripts", "tests", "package.json", "approved plan documents"], "automatic_resume": false},
   "resume_evidence": ["Historical cleanup/resume and FAILED runs retained", "User explicitly granted full recovery2026-10-28", "Final source dd984ce1 has24runtime scenarios and127tests passing with independent static reviews", "Private evidence summary .lab/evidence/final-acceptance-summary-20261028.json", "Current draft hosted verification tracked separately; no production/default-profile rollout"],
   "development_isolation": {
@@ -32,7 +32,7 @@
     "release_ref": null,
     "remote_publish_authorized": false,
     "verification_branch": "omp-system/acceptance-20261027",
-    "verification_head": "bc1854f112ed5d7c0e717d4496dc309077cae543",
+    "verification_head": "d1acaa9e6fbdf14db49d1ad1eb1c4cfd4f15a297",
     "pull_request": "https://github.com/DongVienNguyen/omp-system/pull/1",
     "authorized_actions": ["minimal main bootstrap", "push acceptance branch", "draft PR", "observe CI", "hosted install-test"],
     "forbidden_actions": ["force push", "merge", "release publish", "deploy"],
@@ -46,7 +46,7 @@
   },
   "additional_acceptance": [
     {"id": "A13", "requirement_ids": ["F01", "F04", "F09", "F10", "F12"], "tasks": ["T00", "T18", "T16"], "status": "LOCAL_SURROGATE_VERIFIED_NO_OS_WRITE_AUDIT", "criterion": "Isolated lab and two-session surrogate coexistence; no default/foreign mutation or process control; resource limits and no zero-impact claim"},
-    {"id": "A14", "requirement_ids": ["F01", "F12"], "tasks": ["T17", "T16"], "status": "LOCAL_GIT_NATIVE_VERIFIED_CURRENT_HOSTED_PENDING", "criterion": "Actual clean Git-native install/load/update/rollback/uninstall without manual build/setup; hosted proof separately authorized"}
+    {"id": "A14", "requirement_ids": ["F01", "F12"], "tasks": ["T17", "T16"], "status": "LOCAL_AND_HOSTED_NATIVE_VERIFIED_DRAFT_ONLY", "criterion": "Actual clean Git-native install/load/update/rollback/uninstall without manual build/setup; exact hosted commit proof"}
   ],
   "model_policy": {
     "hard": "9router/code-astra:low",
@@ -575,7 +575,7 @@
       "blockers": [
         "B03"
       ],
-      "status": "CORE_LIVE_VERIFIED_SPECIALIZED_ACCEPTANCE_OPEN",
+      "status": "DONE_WITH_EXPLICIT_CATALOG_CAPABILITY_LIMITS",
       "acceptance_ids": [
         "A01",
         "A06"
@@ -841,7 +841,7 @@
       "blockers": [
         "B05"
       ],
-      "status": "LOCAL_VERIFIED_REMOTE_NOT_RUN",
+      "status": "LOCAL_AND_AUTHORIZED_DRAFT_REMOTE_VERIFIED",
       "acceptance_ids": [
         "A05",
         "A11"
@@ -918,7 +918,7 @@
         "B05",
         "B07"
       ],
-      "status": "LOCAL_WINDOWS_VERIFIED_FULL_RELEASE_BLOCKED",
+      "status": "COMPLETE_VERIFIED_DRAFT_DELIVERY",
       "acceptance_ids": [
         "A01",
         "A02",
@@ -948,7 +948,7 @@
       "rollback": "Reinstall previous verified Git ref and compatible retained state in target lab profile only; never broad upgrade or mutate other profiles; no auto remote publish.",
       "model_class": "medium",
       "blockers": ["B09"],
-      "status": "LOCAL_VERIFIED_HOSTED_NOT_RUN",
+      "status": "LOCAL_AND_HOSTED_NATIVE_VERIFIED",
       "acceptance_ids": ["A01", "A12", "A14"]
     },
     {
@@ -983,8 +983,8 @@
     {
       "id": "B03",
       "owner": "T01/T09",
-      "description": "Runtime blockers recovered: final407788 same-source Windows121/0, native lifecycle/coexistence/delivery/core/comparison PASS; formal recovered; perf exact-snapshot continuation passes frozen measurement/review within24calls without resampling. Remaining: final admitted independent release review blocked by Crews policy synchronization and full specialized semantic parity reconciliation. Hosted PR/CI/install proof present, draft only.",
-      "status": "FINAL_REVIEW_RUNTIME_SYNC_REQUIRED"
+      "description": "Original F01-F12 local acceptance complete at dd984ce1:24runtime cases,127tests,615assertions; independent static reviews102837/e190462 COMPLETE. Exact hosted runtime commit d1acaa9 CI and native install/load/uninstall verified. Historical failures preserved. Trusted-code/catalog limits retained.",
+      "status": "RESOLVED_VERIFIED_DRAFT_DELIVERY"
     },
     {
       "id": "B04",
@@ -1014,7 +1014,7 @@
     {"id": "B09", "owner": "T17/T16", "description": "Actual hosted GitHub exact commit bc1854f install/load/doctor/enable/disable/uninstall verified,287assets single extension, no inference. Draft PR1 and portable-contracts CI green; release_ref null and merge/release/deploy unauthorized.", "status": "HOSTED_VERIFIED_DRAFT_ONLY"},
     {"id": "B10", "owner": "T00/T01", "description": "Historical disk shortage cleared before resumed implementation; preflight enforces 2GiB headroom before allocation", "status": "RESOLVED"}
     ,{"id":"B11","owner":"T09/T16","description":"Original wake run95bba6bed3fd4974a392e093a9606d81 remains historical FAILED; explicit user-authorized recovery4d5c2c018aa743e6b546b161f8e811e9 COMPLETE at exact corrected snapshot, actual Astra/high","status":"RESOLVED_BY_AUTHORIZED_RECOVERY"}
-    ,{"id":"B12","owner":"T09/T16","description":"Fresh Crews plans and canonical native intake refuse Routing policy changed before dispatch. Catalog/native policy versions disagree despite identical Combo binding; reload unchanged. No ordinary-task bypass. Requires runtime policy synchronization/restart before independent final continuation/release verdict.","status":"RUNTIME_SYNC_REQUIRED"}
+    ,{"id":"B12","owner":"T09/T16","description":"Historical policy refusals preserved. Independent admitted reviews102837/e190462 now COMPLETE with actual Astra/high native and wire receipts; no policy counters or fingerprints overwritten.","status":"RESOLVED_BY_AUTHORIZED_FRESH_REVIEW"}
   ],
   "audit_verification": {
     "E01": "LOCAL_VERIFIED",
