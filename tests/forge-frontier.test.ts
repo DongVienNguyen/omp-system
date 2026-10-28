@@ -9,7 +9,7 @@ test('local forge frontier preserves patch verdict across rebase but requires cu
  const dir=mkdtempSync(join(import.meta.dir,'../.lab/frontier-')),project=join(dir,'project');mkdirSync(project);const store=new Store(join(dir,'state'));
  const git=(args:string[])=>{const r=spawnSync('git',['-C',project,'-c','core.autocrlf=false',...args],{encoding:'utf8',timeout:10000,env:{...process.env,GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:process.platform==='win32'?'NUL':'/dev/null'}});if(r.status!==0)throw Error(r.stderr);return r.stdout.trim()};
  const command=async(spec:unknown)=>{const file=join(dir,'command.json');writeFileSync(file,JSON.stringify(spec));return deliveryCommand(store,project,file)};
- const assess=async(spec:unknown)=>{const result=await command(spec);if(!('status' in result)||!('blocked' in result))throw Error('Expected frontier assessment');return result};
+ const assess=async(spec:unknown)=>{const result=await command(spec);if(!('status' in result)||!('blocked' in result)||!Array.isArray(result.blocked))throw Error('Expected frontier assessment');return {status:result.status,blocked:result.blocked as {id:string;reason:string}[]}};
  try{
   git(['init','-b','main']);git(['config','user.name','Local Frontier']);git(['config','user.email','local@invalid']);writeFileSync(join(project,'app.ts'),'export const value=1;\n');git(['add','.']);git(['commit','-m','base']);const base=git(['rev-parse','HEAD']);
   git(['checkout','-b','change']);writeFileSync(join(project,'app.ts'),'export const value=2;\n');git(['commit','-am','change']);const head=git(['rev-parse','HEAD']);

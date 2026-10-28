@@ -54,7 +54,7 @@ export function childEnvironment(profile: string): NodeJS.ProcessEnv {
   verifyOwnership(lab);
   const env = { ...process.env };
   for (const key of Object.keys(env)) {
-    if (key !== 'OMP_SYSTEM_API_KEY' && /^(OMP_|PI_|AGENTKIT_|CREWS_|CONTEXT_MODE_|XDG_)/.test(key)) delete env[key];
+    if (!['OMP_SYSTEM_API_KEY','OMP_SYSTEM_EXECUTABLE'].includes(key) && /^(OMP_|PI_|AGENTKIT_|CREWS_|CONTEXT_MODE_|XDG_)/.test(key)) delete env[key];
   }
   Object.assign(env, {
     OMP_PROFILE: profile, PI_PROFILE: profile,

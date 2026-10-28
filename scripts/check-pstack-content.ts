@@ -30,7 +30,11 @@ const specialized:Record<string,{implementation:string;verification:string;limit
  'autonomous-run':{implementation:'src/standing-controller.ts',verification:'scripts/standing-controller-smoke.ts',limit:'Bounded supplied units and native wake; commit/revert/forge workflow not inferred'},
  'ketchup-video':{implementation:'src/media-catchup.ts',verification:'scripts/media-catchup-smoke.ts',limit:'Frozen native history window, source-backed slides, render and frame/hold review adapter; current task host review required; no arbitrary-history parity'},
  'create-formal-verification-skill':{implementation:'src/formal-skill.ts',verification:'scripts/formal-skill-smoke.ts',limit:'Bounded real-source property, broken-variant sensitivity, native discovery and cold-reader consumer adapter; current task evidence required; no whole-program proof'},
- 'maintain-formal-verification-skill':{implementation:'src/formal-skill.ts',verification:'scripts/formal-skill-smoke.ts',limit:'Coverage/history/drift classification and selected consumer adapter; current task evidence required; no inference from prior comment-only maintenance'}
+ 'maintain-formal-verification-skill':{implementation:'src/formal-skill.ts',verification:'scripts/formal-skill-smoke.ts',limit:'Coverage/history/drift classification selected consumer adapter; current task evidence required; no inference from prior comment-only maintenance'},
+ statechart:{implementation:'src/statechart.ts',verification:'scripts/statechart-smoke.ts',limit:'Pinned supplied from-spec/from-chart/against/fixed tool path and full renderer closure; bounded model proof only, source correspondence separate'},
+ babysit:{implementation:'src/forge-observer.ts',verification:'scripts/source-forge-smoke.ts',limit:'Authenticated exact-head conflict/thread/CI observation only; no autonomous watcher or merge'},
+ orchestrate:{implementation:'src/program.ts',verification:'scripts/program-smoke.ts',limit:'Single Coordinator durable bounded units and owner generations; live dependency-publication blocked by provider auth, full forge lifecycle not certified'},
+ shipping:{implementation:'src/forge-actions.ts',verification:'tests/forge-actions.test.ts',limit:'Explicit operator mutation entrypoint, transaction claim and UNKNOWN quarantine; actual landing unauthorized and not exercised'},
 };
 // Product tokens need boundaries; control plane, linear stack and lean code are prose.
 export function requiredCapabilitiesFor(body:string){

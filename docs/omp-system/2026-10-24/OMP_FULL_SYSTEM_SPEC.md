@@ -1,6 +1,6 @@
 # OMP full system specification
 
-Status: PROPOSED, chưa implementation. Một release bao phủ F01–F12. [Audit và source pins](OMP_SYSTEM_AUDIT.md) là căn cứ hiện trạng; [plan](OMP_IMPLEMENTATION_PLAN.md), [acceptance/runbook](OMP_ACCEPTANCE_AND_OPERATIONS.md), [machine plan](omp-plan.json) là contract thực thi sau phê duyệt.
+Status: approved contract, implementation and original F01–F12 local functional acceptance completed through 2026-10-28 recovery. Historical audit remains baseline, not current status. [Acceptance/runbook](OMP_ACCEPTANCE_AND_OPERATIONS.md) and [machine plan](omp-plan.json) own current evidence, draft-hosted verification and exact-reviewed trusted-code/catalog limits. No default-profile or production rollout implied.
 
 ## Quyết định kiến trúc
 

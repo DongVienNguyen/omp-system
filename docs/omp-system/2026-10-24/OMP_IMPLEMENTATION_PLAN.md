@@ -1,6 +1,6 @@
 # OMP implementation plan — single complete release
 
-Status: IN_PROGRESS after explicit user resume 2026-10-25. Repository https://github.com/DongVienNguyen/omp-system. Lab/profiles recreated after disk cleanup; SDK local install and real worker/reviewer/test/harness paths exercised. Full release acceptance incomplete. No publishing/default-profile installation authorized.
+Status: original F01–F12 local functional acceptance complete after explicit user recovery authorization 2026-10-28. Same-source24runtime scenarios and127tests pass; independent safety reviews COMPLETE. Current draft-head hosted verification tracked separately in acceptance/runbook. Historical failures retained; exact-reviewed trusted-code boundary and catalog capability limits remain explicit. No production/default-profile rollout or merge/deploy performed.
 
 ## Execution rules
 
@@ -228,4 +228,4 @@ Removed project-owned `.lab` (TEMP/cache/state/fixtures), both owned profiles `o
 
 ### Resumed implementation
 
-Disk headroom restored by separately authorized cleanup. T00 profile roots and AK snapshot proven, SDK18.12.6 import and real request/disposal passed. Current source includes contracts/SQLite artifacts, scoped worker/reviewer/check/certifier, budgets/process supervision, pstack imported content/orchestrator, Harness² core port/adapter and separate promotion. Exact source/API and compiler checks matter: prior partial producer/reviewer role outputs are not acceptance. Independent boundary review found evidence/authority/store/cancel issues; local repairs underway. Live repair pipeline and Harness² agg,k1 completed;29-source-method scenarios are not full-system acceptance. Native local Git install/list/uninstall passed; GitHub publishing, all-eight runtime surfaces, follow-on learning task, complete workflow fidelity and Windows cold resume remain unverified. `.lab` contains evidence and must not be committed. No global OMP configuration or other project files changed.
+Original local functional plan completed at source dd984ce1136c21f1d1acccc511f23b1f5fabc1978fd799ffdede66ae7248940b. Acceptance/runbook owns24runtime scenarios,127tests, independent reviews, preserved historical failures and exact trusted-code/catalog limitations. `.lab` remains private evidence and must not be committed. Current draft-head hosted verification is separate; no default-profile/production rollout.

@@ -1,0 +1,10 @@
+import {readFileSync,realpathSync} from 'node:fs';
+import {createProgram,drainProgram,controlProgram,replaceProgramOwner,validateProgram,type ProgramSpec} from './program';
+import type {Store} from './state';import type {Coordinator} from './coordinator';
+export async function programCommand(store:Store,project:string,file:string,coordinator:Coordinator){const value=JSON.parse(readFileSync(file,'utf8'));if(!value||typeof value!=='object'||Array.isArray(value)||typeof value.operation!=='string')throw Error('Program operator specification required');const same=(id:string)=>{const spec=store.get<ProgramSpec>('program-spec',id);if(!spec||realpathSync(spec.project)!==realpathSync(project))throw Error('Program project mismatch');return spec};
+ if(value.operation==='create'){if(Object.keys(value).some(k=>!['operation','spec'].includes(k)))throw Error('Unknown program field');const spec=validateProgram(value.spec);if(realpathSync(spec.project)!==realpathSync(project))throw Error('Program project mismatch');return createProgram(store,spec,true)}
+ if(typeof value.id!=='string')throw Error('Program ID required');same(value.id);
+ if(value.operation==='drain'){if(Object.keys(value).some(k=>!['operation','id'].includes(k)))throw Error('Unknown program field');return drainProgram(store,value.id,coordinator)}
+ if(['hold','release','cancel'].includes(value.operation)){if(Object.keys(value).some(k=>!['operation','id'].includes(k)))throw Error('Unknown program field');return controlProgram(store,value.id,value.operation,true)}
+ if(value.operation==='replace-owner'){if(Object.keys(value).some(k=>!['operation','id','owner','generation','units'].includes(k))||typeof value.owner!=='string'||!Number.isSafeInteger(value.generation)||!Array.isArray(value.units)||value.units.some((x:unknown)=>typeof x!=='string'))throw Error('Exact owner replacement required');return replaceProgramOwner(store,value.id,value.owner,value.generation,value.units,true)}throw Error('Unsupported program operation');
+}

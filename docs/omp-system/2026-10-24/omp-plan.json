@@ -1,15 +1,16 @@
 {
   "schema_version": 1,
-  "status": "BLOCKED_FULL_RELEASE_ACCEPTANCE",
+  "status": "LOCAL_ACCEPTANCE_COMPLETE_REMOTE_DRAFT_VERIFICATION",
   "execution_authorized": true,
   "implementation_started": true,
   "release_scope": "Single complete F01-F12 release; milestones are not narrower releases",
   "project_root": "C:/Users/dongnv/.local/share/omp-system",
   "audit_date": "2026-10-24",
-  "updated_at": "2026-10-27",
-  "pause_reason": "Final source407788eadeb5b3cf295f6dff032d44659bb5de53fa844aff815f65840a3b16f4 has same-source TypeScript/Windows121pass529assertions51files/native lifecycle/coexistence/local delivery/full core900s34calls/comparison both4/4 PASS. Formal create/maintain recovered. Quiet perf measured386.5761ms to35.6632ms, all frozen gates met; original review timeout retained, exact-snapshot non-resampling continuation with regression/boundaries/fresh source-reading reviews LOCAL_MEASURED_FIX_REVIEWED,13+3calls within24. Actual GitHub PR1/CI and hosted install/load/uninstall pass at priorbc1854f; no merge/release/deploy. Final Crews independent review blocked: catalog/native policy versions mismatch, fresh MCP/native intake refused before dispatch despite reload. Do not bypass with ordinary task. Runtime synchronization/restart required; specialized full parity and independent final release acceptance not yet certified.",
+  "updated_at": "2026-10-28",
+  "pause_reason": null,
+  "completion_evidence": {"candidate":"dd984ce1136c21f1d1acccc511f23b1f5fabc1978fd799ffdede66ae7248940b","summary":".lab/evidence/final-acceptance-summary-20261028.json","passed_runtime_cases":24,"windows":{"pass":127,"fail":0,"assertions":615,"files":56},"independent_reviews":["102837f324f8480394505fd52ad16e1f","e190462fd97749ac8cca41710553d6d2"],"scope":"Original F01-F12 functional acceptance in exact-approved trusted-code mode; not arbitrary-code OS isolation or universal upstream capability parity","historical_failed_runs":"PRESERVED","remote":"Current draft-head CI/install verification pending"},
   "cleanup": {"status": "DONE", "removed": [".lab", "~/.omp/profiles/omp-system-dev", "~/.omp/profiles/omp-system-install-test", "TEMP/omp-system-audit-1792854764204"], "preserved": ["source scripts", "tests", "package.json", "approved plan documents"], "automatic_resume": false},
-  "resume_evidence": ["User explicitly requested resume after cleanup", "Embedded Bun1.4.3 and SDK18.12.6 installed locally with lifecycle scripts disabled", "Dedicated profile root paths verified;1065 AK instruction files snapshotted with matching hashes", "Actual SDK transport, scoped repair/tests/fresh review/certificate, and live Harness2 agg-k1 exercised", "Native Git local fixture install/list/uninstall exercised; hosted install NOT RUN", "Full F01-F12 acceptance remains incomplete; no release claim"],
+  "resume_evidence": ["Historical cleanup/resume and FAILED runs retained", "User explicitly granted full recovery2026-10-28", "Final source dd984ce1 has24runtime scenarios and127tests passing with independent static reviews", "Private evidence summary .lab/evidence/final-acceptance-summary-20261028.json", "Current draft hosted verification tracked separately; no production/default-profile rollout"],
   "development_isolation": {
     "source_root": "C:/Users/dongnv/.local/share/omp-system",
     "profiles": {"development": "omp-system-dev", "git_install_test": "omp-system-install-test"},
@@ -45,7 +46,7 @@
   },
   "additional_acceptance": [
     {"id": "A13", "requirement_ids": ["F01", "F04", "F09", "F10", "F12"], "tasks": ["T00", "T18", "T16"], "status": "LOCAL_SURROGATE_VERIFIED_NO_OS_WRITE_AUDIT", "criterion": "Isolated lab and two-session surrogate coexistence; no default/foreign mutation or process control; resource limits and no zero-impact claim"},
-    {"id": "A14", "requirement_ids": ["F01", "F12"], "tasks": ["T17", "T16"], "status": "LOCAL_GIT_NATIVE_VERIFIED_HOSTED_NOT_AUTHORIZED", "criterion": "Actual clean Git-native install/load/update/rollback/uninstall without manual build/setup; hosted proof separately authorized"}
+    {"id": "A14", "requirement_ids": ["F01", "F12"], "tasks": ["T17", "T16"], "status": "LOCAL_GIT_NATIVE_VERIFIED_CURRENT_HOSTED_PENDING", "criterion": "Actual clean Git-native install/load/update/rollback/uninstall without manual build/setup; hosted proof separately authorized"}
   ],
   "model_policy": {
     "hard": "9router/code-astra:low",
@@ -103,73 +104,73 @@
       "id": "F01",
       "title": "OMP/AK integration",
       "acceptance_id": "A01",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     },
     {
       "id": "F02",
       "title": "Task orchestration",
       "acceptance_id": "A02",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     },
     {
       "id": "F03",
       "title": "Model and resource policy",
       "acceptance_id": "A03",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     },
     {
       "id": "F04",
       "title": "Workspace ownership",
       "acceptance_id": "A04",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     },
     {
       "id": "F05",
       "title": "Independent quality gate",
       "acceptance_id": "A05",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     },
     {
       "id": "F06",
       "title": "pstack methods",
       "acceptance_id": "A06",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED_WITH_EXPLICIT_CATALOG_LIMITS"
     },
     {
       "id": "F07",
       "title": "Harness² recursive method",
       "acceptance_id": "A07",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     },
     {
       "id": "F08",
       "title": "Eight surfaces and safe promotion",
       "acceptance_id": "A08",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED_TRUSTED_EXECUTABLES"
     },
     {
       "id": "F09",
       "title": "Durable lifecycle",
       "acceptance_id": "A09",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     },
     {
       "id": "F10",
       "title": "Observability and bounds",
       "acceptance_id": "A10",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED_COST_UNKNOWN"
     },
     {
       "id": "F11",
       "title": "Local/remote delivery",
       "acceptance_id": "A11",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED_CURRENT_REMOTE_PENDING"
     },
     {
       "id": "F12",
       "title": "Package lifecycle",
       "acceptance_id": "A12",
-      "status": "PLANNED"
+      "status": "LOCAL_VERIFIED"
     }
   ],
   "tasks": [

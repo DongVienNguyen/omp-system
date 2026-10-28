@@ -16,6 +16,8 @@ import {validateSessionPickup,runSessionPickup,type SessionPickupRequest} from '
 import {validateFormalRequest,runFormalVerification,type FormalRequest} from './formal-verification';
 import {validateVideoRequest,runEvidenceVideo,type VideoRequest} from './media-video';
 import {parseMediaCatchup,runMediaCatchup,type MediaCatchupRequest} from './media-catchup';
+import {captureSourceEvidence,validateSourceEvidenceRequest,type SourceEvidenceRequest} from './source-evidence';
+import {validateStatechartRequest,runStatechart,type StatechartRequest} from './statechart';
 export interface PlaybookDisposition {route?:PstackMethod;verification:string;prerequisites:string[];local:boolean;runtimeInvocation?:string;boundedAdapter?:boolean;}
 // Requirements describe pinned playbooks, not advertised prompt compatibility.
 export const playbookSemantics:Record<string,PlaybookDisposition>={
@@ -50,6 +52,13 @@ export const catalogRuntimeRoutes:Record<string,string>={
  refactoring:'/omp-system workflow <spec>; kind=catalog, workflow.name=refactoring',
  ...Object.fromEntries(['feature','authoring-a-skill','multi-phase-plan','hillclimb','eval','perf-issue','prototype','create-formal-verification-skill','maintain-formal-verification-skill'].map(name=>[name,`/omp-system catalog-local <spec>; workflow.name=${name}, operation.kind=${name}`])),
  'autonomous-run':'/omp-system standing <spec>; resume: /omp-system standing-resume <spec>; cancel: /omp-system standing-cancel <id>',
+ orchestrate:'/omp-system program <operator-file>; create/drain/hold/release/cancel/replace-owner; bounded queue only, full forge orchestration not certified',
+ babysit:'/omp-system deliver <operator-file>; operation=observe-forge; exact-head read-only observation, no autonomous polling or merge',
+ 'autopilot-full':'/omp-system program <operator-file> plus /omp-system deliver <operator-file>; bounded components only, full owner/swarm/audit lifecycle not certified',
+ 'autopilot-stack':'/omp-system deliver <operator-file>; operation=round/frontier/frontier-check/forge-action; bounded topology components, full stack lifecycle not certified',
+ shipping:'/omp-system deliver <operator-file>; operation=forge-action; explicit exact-project/head mutation authority, no autonomous landing',
+ 'opening-a-pr':'/omp-system deliver <operator-file>; operation=prepare-branch/push/pull-request/reconcile; separate certificate and publishing authority',
+ statechart:'/omp-system catalog-operator <spec>; action=statechart; supplied bounded model/chart only, not real-source equivalence',
  'trace-forensics':'/omp-system catalog-operator <spec>; action=trace',
  'runtime-forensics':'/omp-system catalog-operator <spec>; action=runtime-forensics',
  'session-pickup':'/omp-system catalog-operator <spec>; action=session-history (native history) or action=pickup (stored run)',
@@ -141,6 +150,8 @@ export type CatalogOperatorRequest=
  |FormalRequest
  |VideoRequest
  |MediaCatchupRequest
+ |SourceEvidenceRequest
+ |StatechartRequest
  |{action:'pickup';run:string;project:string}
  |{action:'pause';run:string;project:string;paths:string[];deadline:number;commit?:{approved:true;message:string}}
  |{action:'cleanup';record:OwnedTree;workspaceRoot:string;authority:{approved:true;destination:string;ownerId:string;inactive:true;pinned:false;ignoredArtifacts:'none'}};
@@ -156,6 +167,8 @@ export function validateCatalogOperator(value:unknown,project:string):CatalogOpe
  if(v.action==='formal-check')return validateFormalRequest(v,project);
  if(v.action==='evidence-video')return validateVideoRequest(v,project);
  if(v.action==='media-catchup')return parseMediaCatchup(v,project);
+ if(v.action==='source-evidence')return validateSourceEvidenceRequest(v,project);
+  if(v.action==='statechart')return validateStatechartRequest(v,project);
  if(v.action==='pickup'||v.action==='pause'){exact(v,v.action==='pickup'?['action','run','project']:['action','run','project','paths','deadline','commit']);if(!text(v.run)||!/^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(v.run)||!text(v.project)||resolve(v.project)!==resolve(project))throw Error('Same-workspace operator identity required');
   if(v.action==='pause'){if(!Array.isArray(v.paths)||!v.paths.length||v.paths.some(p=>typeof p!=='string'))throw Error('Explicit pause paths required');v.paths.forEach(p=>safeRelative(p));if(typeof v.deadline!=='number'||!Number.isSafeInteger(v.deadline)||v.deadline<=Date.now())throw Error('Bounded pause deadline required');if(v.commit!==undefined){if(!object(v.commit))throw Error('WIP authority required');exact(v.commit,['approved','message']);if(v.commit.approved!==true||!text(v.commit.message)||!v.commit.message.startsWith('wip:'))throw Error('Explicit wip: commit authority required')}}
  }else if(v.action==='cleanup'){exact(v,['action','record','workspaceRoot','authority']);if(!object(v.record)||!object(v.authority)||!text(v.workspaceRoot))throw Error('Owned cleanup record required');exact(v.record,['owner','id','repository','destination','base']);exact(v.authority,['approved','destination','ownerId','inactive','pinned','ignoredArtifacts']);for(const k of ['owner','id','repository','destination','base'])if(!text(v.record[k]))throw Error('Owned cleanup identity required');if(resolve(v.record.repository as string)!==resolve(project)||v.record.owner!=='omp-system/worktree-v1'||v.authority.approved!==true||v.authority.inactive!==true||v.authority.pinned!==false||v.authority.ignoredArtifacts!=='none'||v.authority.destination!==v.record.destination||v.authority.ownerId!==v.record.id)throw Error('Explicit owned deletion authority required');
@@ -172,6 +185,8 @@ export async function runCatalogOperator(request:CatalogOperatorRequest,context:
  if(request.action==='formal-check')return runFormalVerification(request,store,request.project);
  if(request.action==='evidence-video')return runEvidenceVideo(request,store,request.project);
  if(request.action==='media-catchup')return runMediaCatchup(request,store,request.project);
+ if(request.action==='source-evidence')return captureSourceEvidence(request,store,request.project);
+  if(request.action==='statechart')return runStatechart(request,store,request.project);
  if(request.action==='cleanup'){
   const {authority,record}=request;if(authority.approved!==true||authority.inactive!==true||authority.pinned!==false||authority.ignoredArtifacts!=='none'||resolve(authority.destination)!==resolve(record.destination)||authority.ownerId!==record.id)throw Error('Explicit owned inactive/unpinned cleanup authority required');
   const audit=spawnSync('git',['-C',record.destination,'status','--porcelain=v1','--untracked-files=all','--ignored'],{encoding:'utf8',timeout:10000});if(audit.status!==0||audit.stdout.trim())throw Error('Worktree WIP/untracked/ignored artifacts retained');

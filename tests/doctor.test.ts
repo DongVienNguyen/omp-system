@@ -9,7 +9,7 @@ import {projectStatus} from '../src/status';
 import {root,profileRoot,protectedHashes} from '../scripts/dev-preflight';
 
 test('doctor performs real read-only profile inspection without inference or credential disclosure',()=>{
- const before=protectedHashes(),report=diagnoseProject({project:root,profile:'omp-system-dev',agentDir:join(profileRoot('omp-system-dev'),'agent'),executable:join(process.env.USERPROFILE!,'.local/bin/omp.exe')});
+ const before=protectedHashes(),report=diagnoseProject({project:root,profile:'omp-system-dev',agentDir:join(profileRoot('omp-system-dev'),'agent'),executable:process.env.OMP_SYSTEM_EXECUTABLE??process.execPath});
  expect(report.inference).toBe('NOT RUN');expect(report.mutations).toBe('NONE');expect(report.checks.find(c=>c.id==='host-version')?.status).toBe('PASS');expect(report.checks.find(c=>c.id==='source-pins')?.status).toBe('PASS');expect(report.checks.find(c=>c.id==='package-assets')?.status).toBe('PASS');expect(report.checks.some(c=>c.id==='native-registration')).toBe(true);expect(report.checks.some(c=>c.id==='installed-ak')).toBe(true);expect(protectedHashes()).toEqual(before);
 },45000);
 

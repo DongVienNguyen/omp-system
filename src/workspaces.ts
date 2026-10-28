@@ -1,4 +1,4 @@
-import { lstatSync,realpathSync,readdirSync,readFileSync,writeFileSync,mkdirSync,existsSync,renameSync,unlinkSync,statSync,openSync,closeSync } from 'node:fs';
+import { lstatSync,realpathSync,readdirSync,readFileSync,writeFileSync,mkdirSync,existsSync,renameSync,unlinkSync,statSync,openSync,closeSync,mkdtempSync,rmSync } from 'node:fs';
 import { resolve,relative,dirname,join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
@@ -27,12 +27,12 @@ export function applyFiles(store:Store,base:Snapshot,candidate:Snapshot,liveRoot
  const current=snapshot(store,liveRoot,base.scope);if(current.id!==base.id)throw Error('Integration conflict; live snapshot changed');
  if(candidate.files.some(f=>!base.scope.some(s=>f.path===s||f.path.startsWith(s+'/'))))throw Error('New paths require explicit integration scope');
  const changes=candidate.files.filter(f=>base.files.find(b=>b.path===f.path)?.hash!==f.hash),deleted=base.files.filter(f=>!candidate.files.some(c=>c.path===f.path));
- const staged:{dest:string;temp:string;previous?:Buffer;mode?:number}[]=[];
- try{for(const f of changes){const dest=scoped(liveRoot,f.path);mkdirSync(dirname(dest),{recursive:true});const temp=dest+'.omp-system-'+randomUUID();const previous=existsSync(dest)?readFileSync(dest):undefined;writeFileSync(temp,store.readArtifact(f.artifact),{flag:'wx',mode:f.mode});staged.push({dest,temp,previous,mode:f.mode})}
+ const staged:{dest:string;temp:string;previous?:Buffer;mode?:number}[]=[],staging=mkdtempSync(join(dirname(realpathSync(liveRoot)),'.omp-system-stage-'));
+ try{for(const f of changes){const dest=scoped(liveRoot,f.path);mkdirSync(dirname(dest),{recursive:true});const temp=join(staging,randomUUID());const previous=existsSync(dest)?readFileSync(dest):undefined;writeFileSync(temp,store.readArtifact(f.artifact),{flag:'wx',mode:f.mode});staged.push({dest,temp,previous,mode:f.mode})}
  if(snapshot(store,liveRoot,base.scope).id!==base.id)throw Error('Integration conflict before apply');
  const applied:typeof staged=[];try{for(const item of staged){const expected=base.files.find(f=>f.path===relative(liveRoot,item.dest).replaceAll('\\','/'));if(expected?(!existsSync(item.dest)||digest(readFileSync(item.dest).toString('base64'))!==expected.hash):existsSync(item.dest))throw Error('Integration conflict during commit');renameSync(item.temp,item.dest);applied.push(item)}for(const f of deleted){const dest=scoped(liveRoot,f.path);if(!existsSync(dest)||digest(readFileSync(dest).toString('base64'))!==f.hash)throw Error('Integration delete conflict');unlinkSync(dest)}}catch(error){for(const item of applied.reverse()){const candidateFile=candidate.files.find(f=>f.path===relative(liveRoot,item.dest).replaceAll('\\','/'));if(existsSync(item.dest)&&candidateFile&&digest(readFileSync(item.dest).toString('base64'))!==candidateFile.hash)continue;if(item.previous)writeFileSync(item.dest,item.previous);else if(existsSync(item.dest))unlinkSync(item.dest)}for(const f of deleted)if(!existsSync(scoped(liveRoot,f.path)))writeFileSync(scoped(liveRoot,f.path),store.readArtifact(f.artifact));throw error}
  store.invalidate(base.id,'Integrated candidate replaces baseline');return [...changes,...deleted].map(f=>f.path);
- }finally{for(const item of staged)if(existsSync(item.temp))unlinkSync(item.temp)}
+ }finally{rmSync(staging,{recursive:true,force:true})}
  }finally{closeSync(lockFd);if(existsSync(lock))unlinkSync(lock)}
 }
 export function fsTools(root:string,readScope:string[],writeScope:string[],onRead?:(path:string)=>void){const allowed=(p:string,scope:string[])=>scope.some(s=>p===s||p.startsWith(s+'/'));return [

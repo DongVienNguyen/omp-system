@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';import {mkdirSync,writeFileSync,readFileSync,readdirSync,lstatSync} from 'node:fs';import {join} from 'node:path';import {randomUUID} from 'node:crypto';
+import {root} from './dev-preflight';import {Store} from '../src/state';import {digest} from '../src/contracts';import {runStatechart} from '../src/statechart';
+import {createHash} from 'node:crypto';
+const hash=(path:string)=>createHash('sha256').update(readFileSync(path)).digest('hex');
+const cache=join(root,'.lab/toolchains/statechart-cache'),rendererRoot=join(cache,'statechart/pele-1.8.0-resvg-js-2.6.2'),files:{path:string;sha256:string}[]=[];const collect=(dir:string,rel='')=>{for(const name of readdirSync(dir)){const path=rel?rel+'/'+name:name,p=join(dir,name),stat=lstatSync(p);if(stat.isSymbolicLink())throw Error('Renderer cache must be link-free');if(stat.isDirectory())collect(p,path);else files.push({path,sha256:hash(p)})}};collect(rendererRoot);
+const id='statechart-'+randomUUID(),project=join(root,'.lab/workspaces',id);mkdirSync(project,{recursive:true});const store=new Store(join(root,'.lab/state',id));
+try{
+ const model='---- MODULE Lamp ----\nEXTENDS Naturals\nVARIABLE light\nvars == <<light>>\nInit == light = "Off"\nSwitchOn == /\\ light = "Off" /\\ light\' = "On"\nSwitchOff == /\\ light = "On" /\\ light\' = "Off"\nNext == SwitchOn \\/ SwitchOff\nSpec == Init /\\ [][Next]_vars\nSafe == light \\in {"Off", "On"}\n====\n';
+ writeFileSync(join(project,'Lamp.tla'),model);writeFileSync(join(project,'Lamp.cfg'),'SPECIFICATION Spec\nINVARIANT Safe\n');
+ const mapping='export const state = v => v.light;\nexport const step = action => ({SwitchOn:"you turn on",SwitchOff:"you turn off"})[action];\n';writeFileSync(join(project,'Lamp.map.mjs'),mapping);
+ const tools=JSON.parse(readFileSync(join(root,'.lab/evidence/toolchains-20261026.json'),'utf8')).sources,java=tools.find((x:any)=>x.name.startsWith('Temurin')).executable,tlc=tools.find((x:any)=>x.name.startsWith('TLC')).path,node='C:/Program Files/nodejs/node.exe',pin=(path:string)=>({path,sha256:hash(path)});
+ const result=await runStatechart({renderer:{cache,entrySha256:hash(join(rendererRoot,'entry.mjs')),files},action:'statechart',id,project,mode:'from-spec',input:'Lamp.tla',config:'Lamp.cfg',map:'Lamp.map.mjs',expectBroken:[],inputs:['Lamp.tla','Lamp.cfg','Lamp.map.mjs'].map(path=>({path,sha256:hash(join(project,path))})),tools:{node:pin(node),java:pin(java),tlc:pin(tlc)},approvals:[{path:'Lamp.map.mjs',sha256:digest(mapping),expires:Date.now()+180000,purpose:'harness-surface'}],deadline:Date.now()+180000},store,project);
+ writeFileSync(join(project,'evidence.json'),JSON.stringify(result,null,2));console.log(JSON.stringify({project,status:result.status,artifacts:result.artifacts}));assert(result.modelVerified);
+}finally{store.close()}

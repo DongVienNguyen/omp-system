@@ -7,8 +7,9 @@ import {Database} from 'bun:sqlite';
 import {Store} from '../src/state';
 import {root,preflight,childEnvironment,protectedHashes,profileRoot} from './dev-preflight';
 import {createNewPrivateDirectory} from './windows-private-files';
+if(!process.env.OMP_SYSTEM_API_KEY)throw Error('Explicit process-only doctor auth selector required before native lifecycle mutation');
 preflight();const before=protectedHashes();const reports:unknown[]=[];
-const env=childEnvironment('omp-system-install-test'),exe=join(process.env.USERPROFILE!,'.local','bin','omp.exe');
+const env=childEnvironment('omp-system-install-test'),exe=process.env.OMP_SYSTEM_EXECUTABLE??process.execPath;
 const native=(step:string,args:string[],timeout=240000)=>{const r=spawnSync(exe,['--profile','omp-system-install-test','plugin',...args],{cwd:root,env,encoding:'utf8',timeout,windowsHide:true});const row={step,exit:r.status,stdout:r.stdout,stderr:r.stderr};reports.push(row);console.log(JSON.stringify(row));if(r.status!==0)throw Error('Native lifecycle failed '+step+': '+r.stderr);return r.stdout};
 function plugins(){const data:unknown=JSON.parse(native('list',['list','--json'],20000));if(!data||typeof data!=='object'||!('npm'in data)||!Array.isArray(data.npm)||!('marketplace'in data)||!Array.isArray(data.marketplace))throw Error('Malformed plugin inventory');return {npm:data.npm as unknown[],marketplace:data.marketplace as unknown[]}}
 const initial=plugins();if(initial.npm.length||initial.marketplace.length)throw Error('Install-test profile contains existing registrations; refusing mutation');

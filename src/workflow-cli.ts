@@ -1,17 +1,20 @@
-import {readFileSync,mkdirSync} from 'node:fs';import {join} from 'node:path';import {getAgentDir} from '@oh-my-pi/pi-utils';
+import {readFileSync,mkdirSync,realpathSync} from 'node:fs';import {join} from 'node:path';import {getAgentDir} from '@oh-my-pi/pi-utils';
 import {parseWorkflow} from './workflow-spec';import {Store} from './state';import {digest} from './contracts';import {verifiedEvidence} from './evidence';import {openProvider} from './provider';import {snapshot} from './workspaces';import {createMethodHost} from './pstack-host';import {runMethod} from './pstack';
 import {RepositoryTaskAdapter} from './harness/repository-task';import {runMode,createSlots} from './harness/recursion';import {selectFinal,reflectAdoption} from './harness/selection';import {Library} from './harness/library';import {ModelBudget} from './model-budget';
 import {runCatalogWorkflow,prepareCatalogWorkflow} from './catalog-method';
 import {resolveActiveHarness} from './harness/active-policy';
 import {materialise} from './harness/surfaces';
-const [file,approval]=process.argv.slice(2);if(!file||!approval)throw Error('Workflow file and sealed operator approval required');const spec=parseWorkflow(JSON.parse(readFileSync(file,'utf8')));const agentDir=getAgentDir(),store=new Store(join(agentDir,'omp-system',digest(spec.project)));
-const auth=verifiedEvidence<any>(store,'authority',approval);if(auth.action!=='workflow'||auth.project!==spec.project||auth.specDigest!==digest(spec)||auth.expires<=Date.now())throw Error('Workflow approval mismatch');
+import {loadSourceEvidence,validateEvidenceCitations} from './source-evidence';
+const [file,approval]=process.argv.slice(2);if(!file||!approval)throw Error('Workflow file and sealed operator approval required');const spec=parseWorkflow(JSON.parse(readFileSync(file,'utf8'))),project=realpathSync(spec.project);const agentDir=getAgentDir(),store=new Store(join(agentDir,'omp-system',digest(project)));
+const auth=verifiedEvidence<any>(store,'authority',approval);if(auth.action!=='workflow'||auth.project!==project||auth.specDigest!==digest(spec)||auth.expires<=Date.now())throw Error('Workflow approval mismatch');
 if(store.get('experiment',spec.id)||store.get('method-result',spec.id))throw Error('Workflow ID already exists');
 if(spec.kind==='catalog')prepareCatalogWorkflow(spec);
 const provider=await openProvider(agentDir);const work=join(store.directory,'experiments',spec.id);mkdirSync(work,{recursive:true});const base=snapshot(store,spec.project,spec.paths);
 try{
  if(spec.kind==='pstack'){
-  const host=createMethodHost({tokenLimits:spec.budget,store,base,root:work,task:spec.task,readScope:spec.paths,writeScope:spec.write_scope,checks:spec.checks,runtime:{agentDir,...provider},maxCalls:spec.budget.maxCalls,deadline:spec.budget.deadline,trustedCode:true});const result=await runMethod(spec.method!,{task:spec.task,candidates:spec.candidates,rubric:spec.rubric,verificationMode:spec.verificationMode},host);store.put('method-result',spec.id,result);console.log(JSON.stringify(result));if(!result.verified)process.exitCode=1;
+  const packet=spec.sourceEvidence?loadSourceEvidence(store,spec.sourceEvidence,spec.project):undefined,evidence=packet?[{id:packet.id,role:'host-source',body:JSON.stringify(packet),evidence:[]}]:undefined;
+  const task=spec.task+(packet?' Source anchors use [source:ID:ROW]; report every consulted source including nulls as [coverage:ID:STATUS]. No causal intent claim without captured source citation.':'');
+  const host=createMethodHost({tokenLimits:spec.budget,store,base,root:work,task,readScope:spec.paths,writeScope:spec.write_scope,checks:spec.checks,runtime:{agentDir,...provider},maxCalls:spec.budget.maxCalls,deadline:spec.budget.deadline,trustedCode:true});const result=await runMethod(spec.method!,{task,candidates:spec.candidates,rubric:spec.rubric,verificationMode:spec.verificationMode,evidence},host);if(packet)validateEvidenceCitations(result.selected!.body,packet);store.put('method-result',spec.id,result);console.log(JSON.stringify(result));if(!result.verified)process.exitCode=1;
  }else if(spec.kind==='catalog'){
   const result=await runCatalogWorkflow(spec,{store,base,root:work,runtime:{agentDir,...provider}});console.log(JSON.stringify(result));if(!result.verified)process.exitCode=1;
  }else{
